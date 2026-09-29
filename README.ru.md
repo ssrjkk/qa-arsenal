@@ -47,23 +47,23 @@
 ```
 qa-arsenal/
 ├── hh/                      # hh.ru (headhunter)
-│   ├── api/                 #   REST API тесты   — Python/pytest (73: 46 unit + 27 integration)
-│   └── ui/                  #   E2E UI тесты     — TypeScript/Playwright + vitest unit (18)
+│   ├── api/                 #   REST API тесты   — Python/pytest (95: 68 unit + 27 integration)
+│   └── ui/                  #   E2E UI тесты     — TypeScript/Playwright + vitest unit (29)
 ├── guap/                    # guap.ru
-│   ├── python/              #   API + UI + load + SQL — Python/pytest (49: 19 unit + 30 integration)
-│   └── go/                  #   API тесты + SQL-задачи — Go (48: 8 unit + 40 integration)
-└── amocrm/                  # amoCRM — API, БД, Kafka, load, UI, кроссбраузер (228: 12 unit + 216 integration)
+│   ├── python/              #   API + UI + load + SQL — Python/pytest (58: 28 unit + 30 integration)
+│   └── go/                  #   API тесты + SQL-задачи — Go (53: 13 unit + 40 integration)
+└── amocrm/                  # amoCRM — API, БД, Kafka, load, UI, кроссбраузер (245: 29 unit + 216 integration)
 ```
 
 ## Статус таргетов
 
 | Таргет | Тестов | Hermetic в CI | Зрелость |
 |--------|-------:|--------------:|----------|
-| `hh/api` | 73 (46 unit + 27 integration) | 46 unit + контракты | зрелый — слоистая архитектура, моки, валидация |
-| `hh/ui` | 18 (12 unit + 6 E2E) | 12 unit + typecheck + lint | растёт — E2E против живого/mock-приложения |
-| `guap/python` | 49 (19 unit + 30 integration) | 19 unit | рабочий |
-| `guap/go` | 48 (8 unit + 40 integration) | 8 unit + build + vet | рабочий |
-| `amocrm` | 228 (12 unit + 216 integration) | 12 unit | зрелый — крупнейший, мульти-пайплайн (API/БД/Kafka/UI/load) |
+| `hh/api` | 95 (68 unit + 27 integration) | 68 unit + контракты | зрелый — слоистая архитектура, моки, валидация |
+| `hh/ui` | 29 (23 unit + 6 E2E) | 23 unit + typecheck + lint | растёт — E2E против живого/mock-приложения |
+| `guap/python` | 58 (28 unit + 30 integration) | 28 unit | рабочий |
+| `guap/go` | 53 (13 unit + 40 integration) | 13 unit + build + vet | рабочий |
+| `amocrm` | 245 (29 unit + 216 integration) | 29 unit | зрелый — крупнейший, мульти-пайплайн (API/БД/Kafka/UI/load) |
 
 ## Известные ограничения (честно)
 
@@ -132,11 +132,11 @@ cd amocrm && pip install -r requirements.txt && pytest
 
 | Джоба | Что выполняется |
 |-------|-----------------|
-| `hh/api` | 46 unit + контрактные тесты (`pytest -m "not integration"`) |
-| `hh/ui` | 12 unit-тестов (`vitest run`) + typecheck + lint |
-| `guap/python` | 19 unit-тестов + `pytest --collect-only` |
+| `hh/api` | 68 unit + контрактные тесты (замер coverage) |
+| `hh/ui` | 23 unit-теста (`vitest run`) + typecheck + lint |
+| `guap/python` | 28 unit-тестов (замер coverage) + `pytest --collect-only` |
 | `guap/go` | `go build ./...` + `go vet ./...` + `go test ./unit/...` |
-| `amocrm` | 12 unit-тестов + `pytest --collect-only` |
+| `amocrm` | 29 unit-тестов (замер coverage) + `pytest --collect-only` |
 
 Живые интеграционные тесты (реальные API hh.ru / guap.ru / amoCRM, Playwright против
 работающего приложения) требуют credentials из `.env` и запускаются **локально** (`make test`)
