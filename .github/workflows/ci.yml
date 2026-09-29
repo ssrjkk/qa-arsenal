@@ -8,6 +8,7 @@ on:
 
 jobs:
   hh-api:
+    name: hh/api — unit tests
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -18,9 +19,12 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: pytest -q
+      # Integration tests hit the live hh.ru API (403 without a real token + UA);
+      # unit/contract tests are hermetic and run here.
+      - run: pytest -m "not integration" -q
 
   hh-ui:
+    name: hh/ui — typecheck + lint
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -33,10 +37,11 @@ jobs:
           cache: npm
           cache-dependency-path: hh/ui/package-lock.json
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - run: npm test
+      - run: npm run typecheck
+      - run: npm run lint
 
   guap-python:
+    name: guap/python — import + collect check
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -47,9 +52,11 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: pytest -q
+      - run: python -m compileall -q api_client api_tests ui_tests
+      - run: pytest --collect-only -q
 
   guap-go:
+    name: guap/go — build + vet
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -60,9 +67,10 @@ jobs:
         with:
           go-version: "1.21"
       - run: go build ./...
-      - run: go test ./...
+      - run: go vet ./...
 
   amocrm:
+    name: amocrm — import + collect check
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -73,4 +81,5 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: pytest -q
+      - run: python -m compileall -q pipelines src tests
+      - run: pytest --collect-only -q

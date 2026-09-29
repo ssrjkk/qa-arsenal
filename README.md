@@ -59,9 +59,21 @@ All targets require their respective `.env` (see each directory's `.env.example`
 
 ## CI
 
-`.github/workflows/ci.yml` runs every target in a matrix on every push/PR: Python 3.12 for the
-Python suites, Node 20 + Playwright for the UI suite, Go 1.21 for the Go suite. Each target also
-keeps its own local workflows for the pipelines it needs (load, k8s, cross-browser).
+`.github/workflows/ci.yml` runs on every push/PR and is a **hermetic health check** — it never
+needs real credentials:
+
+| job | what runs |
+|-----|-----------|
+| `hh/api` | unit + contract tests (`pytest -m "not integration"`) |
+| `hh/ui` | typecheck (`tsc --noEmit`) + lint |
+| `guap/python` | bytecode compile + `pytest --collect-only` |
+| `guap/go` | `go build ./...` + `go vet ./...` |
+| `amocrm` | bytecode compile + `pytest --collect-only` |
+
+Live integration tests (real hh.ru / guap.ru / amoCRM APIs, Playwright against a running app)
+require a `.env` with credentials and are run **locally** (`make test`, see per-target READMEs)
+or on a schedule with secrets. In CI without those credentials they are excluded, so the
+pipeline stays green and signals real problems only.
 
 ## License
 
