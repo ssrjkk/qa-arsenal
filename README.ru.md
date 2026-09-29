@@ -121,6 +121,11 @@ cd amocrm && pip install -r requirements.txt && pytest
 
 ---
 
+## Участие
+
+См. [CONTRIBUTING.md](CONTRIBUTING.md) — как добавить таргет, запускать проверки и что должно
+быть в pull request.
+
 ## Лицензия
 
 MIT — см. [LICENSE](LICENSE).

@@ -121,6 +121,11 @@ problems only.
 
 ---
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) — how to add a target, run checks, and what a pull
+request must satisfy.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
