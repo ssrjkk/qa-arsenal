@@ -6,8 +6,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/ssrjkk/amoCRM.git
-cd amoCRM
+git clone https://github.com/ssrjkk/qa-arsenal.git
+cd amocrm
 
 # Install dependencies
 pip install -r requirements.txt
@@ -89,9 +89,10 @@ amoCRM/
 │   └── kafka/         # Kafka tests
 ├── core/               # Core utilities
 ├── fixtures/           # Test fixtures
-├── .github/workflows/# CI/CD pipelines
 └── docker/             # Docker files
 ```
+
+CI: см. корневой `.github/workflows/ci.yml` репозитория `qa-arsenal`.
 
 ## ✅ PR Requirements
 
