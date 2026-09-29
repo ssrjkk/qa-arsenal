@@ -1,9 +1,9 @@
-# hh-api-tests By ssrjkk
+# hh/api — hh.ru API tests
 
-[![CI Status](https://github.com/ssrjkk/hh-api-tests/actions/workflows/ci.yml/badge.svg)](https://github.com/ssrjkk/hh-api-tests/actions)
+[![CI Status](https://github.com/ssrjkk/qa-arsenal/tree/master/hh/api/actions/workflows/ci.yml/badge.svg)](https://github.com/ssrjkk/qa-arsenal/tree/master/hh/api/actions)
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Tests](https://img.shields.io/badge/tests-31%20passed-brightgreen.svg)](https://github.com/ssrjkk/hh-api-tests/actions)
-[![Coverage](https://codecov.io/gh/ssrjkk/hh-api-tests/branch/main/graph/badge.svg)](https://codecov.io/gh/ssrjkk/hh-api-tests)
+[![Tests](https://img.shields.io/badge/tests-31%20passed-brightgreen.svg)](https://github.com/ssrjkk/qa-arsenal/tree/master/hh/api/actions)
+[![Coverage](https://codecov.io/gh/ssrjkk/qa-arsenal/tree/master/hh/api/branch/main/graph/badge.svg)](https://codecov.io/gh/ssrjkk/qa-arsenal/tree/master/hh/api)
 
 **31 тест** · **<0.5s полный прогон** · **99%+ стабильность** · **Docker/K8s ready**
 
@@ -150,7 +150,7 @@ docker run --rm hh-tests pytest tests/ -v
 | **Report** | Allure → GitHub Pages | Публичная история тестов |
 | **Coverage** | pytest-cov → Codecov | Отслеживание покрытия кода |
 
-Посмотреть CI: https://github.com/ssrjkk/hh-api-tests/actions  
+Посмотреть CI: https://github.com/ssrjkk/qa-arsenal/tree/master/hh/api/actions  
 Allure отчеты: https://ssrjkk.github.io/hh-api-tests/allure/
 
 ---
