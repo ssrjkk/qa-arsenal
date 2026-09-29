@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
+import type { IResponse } from '../types/api.types';
 import {
   ResponseValidator,
   authResponseRules,
   todoValidationRules,
 } from '../helpers/response.validator';
 
-function response(status: number, data: unknown) {
-  return { status, data } as any;
+function response(status: number, data: unknown): IResponse<unknown> {
+  return { status, data, headers: {} };
 }
 
 describe('ResponseValidator.validateStructure', () => {
