@@ -47,13 +47,37 @@
 ```
 qa-arsenal/
 ├── hh/                      # hh.ru (headhunter)
-│   ├── api/                 #   REST API тесты   — Python/pytest (~67 тестов)
-│   └── ui/                  #   E2E UI тесты     — TypeScript/Playwright
+│   ├── api/                 #   REST API тесты   — Python/pytest (62: 35 unit + 27 integration)
+│   └── ui/                  #   E2E UI тесты     — TypeScript/Playwright (6)
 ├── guap/                    # guap.ru
-│   ├── python/              #   API + UI + load + SQL — Python/pytest (~30 тестов)
-│   └── go/                  #   API тесты + SQL-задачи — Go (~40 тестов)
-└── amocrm/                  # amoCRM — API, БД, Kafka, load, UI, кроссбраузер (~230 тестов)
+│   ├── python/              #   API + UI + load + SQL — Python/pytest (30)
+│   └── go/                  #   API тесты + SQL-задачи — Go (40)
+└── amocrm/                  # amoCRM — API, БД, Kafka, load, UI, кроссбраузер (216)
 ```
+
+## Статус таргетов
+
+| Таргет | Тестов | Hermetic в CI | Зрелость |
+|--------|-------:|--------------:|----------|
+| `hh/api` | 62 (35 unit + 27 integration) | unit + контракты | зрелый — слоистая архитектура, моки, валидация |
+| `hh/ui` | 6 | только typecheck + lint | ранний — мало E2E, запуск против живого/mock-приложения |
+| `guap/python` | 30 | compile + collect | рабочий |
+| `guap/go` | 40 | build + vet | рабочий |
+| `amocrm` | 216 | compile + collect | зрелый — крупнейший, мульти-пайплайн (API/БД/Kafka/UI/load) |
+
+## Известные ограничения (честно)
+
+- **Интеграционные тесты требуют живых API и credentials** (`.env`). Они *не* выполняются в CI —
+  CI проверяет только hermetic unit-тесты и здоровье сборки. Зелёный пайплайн **не** доказывает,
+  что интеграционные наборы проходят; запускайте `make test` локально с реальным `.env`.
+- **Нет гейта по покрытию** — у части таргетов есть конфиг coverage, но моно-репо не блокирует
+  мержи по порогу покрытия.
+- **`hh/ui` — самый тонкий таргет** — всего 6 E2E-спецификаций; в пайплайне только typecheck + lint,
+  автоматического браузерного прогона нет.
+- **Стиль кода различается между таргетами** — каждый строился независимо со своим стеком и
+  конвенциями. Моно-репо стандартизует *интерфейс* (Makefile, CI, README), но не внутренности.
+- **`amocrm` тяжёлый** — крупнейший набор; полный локальный запуск требует PostgreSQL, Kafka,
+  Selenium Grid и Elasticsearch (см. его `docker-compose`).
 
 ---
 
@@ -124,7 +148,7 @@ cd amocrm && pip install -r requirements.txt && pytest
 ## Участие
 
 См. [CONTRIBUTING.md](CONTRIBUTING.md) — как добавить таргет, запускать проверки и что должно
-быть в pull request.
+быть в pull request. Сообщение об уязвимостях: см. [SECURITY.md](SECURITY.md).
 
 ## Лицензия
 

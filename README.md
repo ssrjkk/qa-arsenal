@@ -47,13 +47,37 @@ value on top:
 ```
 qa-arsenal/
 ├── hh/                      # hh.ru (headhunter)
-│   ├── api/                 #   REST API tests   — Python/pytest (~67 tests)
-│   └── ui/                  #   E2E UI tests     — TypeScript/Playwright
+│   ├── api/                 #   REST API tests   — Python/pytest (62: 35 unit + 27 integration)
+│   └── ui/                  #   E2E UI tests     — TypeScript/Playwright (6)
 ├── guap/                    # guap.ru
-│   ├── python/              #   API + UI + load + SQL — Python/pytest (~30 tests)
-│   └── go/                  #   API tests + SQL tasks — Go (~40 tests)
-└── amocrm/                  # amoCRM — API, DB, Kafka, load, UI, cross-browser (~230 tests)
+│   ├── python/              #   API + UI + load + SQL — Python/pytest (30)
+│   └── go/                  #   API tests + SQL tasks — Go (40)
+└── amocrm/                  # amoCRM — API, DB, Kafka, load, UI, cross-browser (216)
 ```
+
+## Target status
+
+| Target | Tests | Hermetic in CI | Maturity |
+|--------|------:|---------------:|----------|
+| `hh/api` | 62 (35 unit + 27 integration) | unit + contract | mature — layered architecture, mocks, validation |
+| `hh/ui` | 6 | typecheck + lint only | early — few E2E specs, runs against a live/mock app |
+| `guap/python` | 30 | compile + collect | working |
+| `guap/go` | 40 | build + vet | working |
+| `amocrm` | 216 | compile + collect | mature — largest, multi-pipeline (API/DB/Kafka/UI/load) |
+
+## Known limitations (honest)
+
+- **Integration tests need live APIs and credentials** (`.env`). They are *not* run in CI — CI
+  only checks hermetic unit tests and build health. A green pipeline does **not** prove the
+  integration suites pass; run `make test` locally with a real `.env` for that.
+- **No coverage gate** — some targets carry coverage config, but the monorepo does not enforce a
+  coverage threshold on merges.
+- **`hh/ui` is the thinnest target** — 6 E2E specs only; the pipeline checks typecheck + lint but
+  has no automated browser run.
+- **Code style differs between targets** — each was built independently with its own stack and
+  conventions. The monorepo standardizes the *interface* (Makefile, CI, README), not the internals.
+- **`amocrm` is heavy** — the biggest suite; a full local run needs PostgreSQL, Kafka, Selenium
+  Grid and Elasticsearch (see its `docker-compose`).
 
 ---
 
@@ -124,7 +148,7 @@ problems only.
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) — how to add a target, run checks, and what a pull
-request must satisfy.
+request must satisfy. Security reporting: see [SECURITY.md](SECURITY.md).
 
 ## License
 
