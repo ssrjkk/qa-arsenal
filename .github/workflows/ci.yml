@@ -6,10 +6,16 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Cancel superseded runs: a new push makes older in-flight runs obsolete.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   hh-api:
     name: hh/api — unit tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: hh/api
@@ -26,6 +32,7 @@ jobs:
   hh-ui:
     name: hh/ui — typecheck + lint
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: hh/ui
@@ -43,6 +50,7 @@ jobs:
   guap-python:
     name: guap/python — import + collect check
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: guap/python
@@ -58,6 +66,7 @@ jobs:
   guap-go:
     name: guap/go — build + vet
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: guap/go
@@ -72,6 +81,7 @@ jobs:
   amocrm:
     name: amocrm — import + collect check
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: amocrm
