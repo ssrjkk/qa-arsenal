@@ -1,0 +1,13 @@
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["api_tests", "ui_tests", "load_tests", "sql_tasks"]
+markers = [
+    "api: API tests",
+    "ui: UI tests",
+    "load: Load tests",
+    "smoke: Quick smoke tests",
+    "regression: Regression tests",
+    "critical: Critical scenarios",
+    "negative: Negative cases",
+    "slow: Slow tests (skip in CI by default)",
+]
