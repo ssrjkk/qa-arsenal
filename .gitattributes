@@ -1,0 +1,18 @@
+# Normalize line endings per file type
+* text=auto
+
+*.sh      text eol=lf
+*.py      text eol=lf
+*.ts      text eol=lf
+*.go      text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+*.json    text eol=lf
+*.md      text eol=lf
+Makefile  text eol=lf
+Dockerfile text eol=lf
+
+# Binaries stay as-is
+*.png     binary
+*.jpg     binary
+*.ico     binary
