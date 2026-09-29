@@ -1,5 +1,7 @@
 # qa-arsenal
 
+[![CI](https://github.com/ssrjkk/qa-arsenal/actions/workflows/ci.yml/badge.svg)](https://github.com/ssrjkk/qa-arsenal/actions)
+
 Unified QA test suites for multiple platforms, consolidated from five separate repositories
 into one monorepo organized by target.
 
