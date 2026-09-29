@@ -183,7 +183,7 @@ func isEmpty(rv reflect.Value) bool {
 }
 
 type Schema struct {
-	fields map[string]fieldSchema
+	fields map[string]*fieldSchema
 }
 
 type fieldSchema struct {
@@ -200,13 +200,13 @@ type fieldSchema struct {
 
 func NewSchema() *Schema {
 	return &Schema{
-		fields: make(map[string]fieldSchema),
+		fields: make(map[string]*fieldSchema),
 	}
 }
 
 func (s *Schema) Field(name string) *fieldSchema {
 	fs := &fieldSchema{}
-	s.fields[name] = *fs
+	s.fields[name] = fs
 	return fs
 }
 

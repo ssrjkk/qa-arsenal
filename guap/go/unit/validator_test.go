@@ -99,7 +99,7 @@ func TestValidateJSONSchema(t *testing.T) {
 		t.Fatalf("expected 1 required error, got %v", errs)
 	}
 
-	if errs := base.ValidateJSONSchema(map[string]interface{}{"id": 1, "name": "ab"}, schema); len(errs) != 0 {
+	if errs := base.ValidateJSONSchema(map[string]interface{}{"id": 1, "name": "ab"}, schema); len(errs) != 1 {
 		t.Fatalf("short name should produce an error, got %v", errs)
 	}
 
