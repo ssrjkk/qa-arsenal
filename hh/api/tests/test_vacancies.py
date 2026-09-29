@@ -5,6 +5,8 @@ from api.vacancies_api import VacanciesApi
 from validators.response_validator import ResponseValidator
 
 
+pytestmark = pytest.mark.integration
+
 @allure.feature("Vacancies API")
 @allure.story("Поиск вакансий")
 class TestVacanciesSearch:
@@ -108,6 +110,8 @@ class TestVacanciesSearch:
         ResponseValidator(response).status(200).has_key("items").raise_if_errors()
 
 
+pytestmark = pytest.mark.integration
+
 @allure.feature("Vacancies API")
 @allure.story("Детали вакансии")
 class TestVacancyDetail:
@@ -139,6 +143,8 @@ class TestVacancyDetail:
 
         ResponseValidator(response).status(404).raise_if_errors()
 
+
+pytestmark = pytest.mark.integration
 
 @allure.feature("Vacancies API")
 @allure.story("Фильтры поиска")
@@ -180,6 +186,8 @@ class TestSearchFilters:
 
         ResponseValidator(response).status(200).json_path("items").raise_if_errors()
 
+
+pytestmark = pytest.mark.integration
 
 @allure.feature("Vacancies API")
 @allure.story("Производительность")

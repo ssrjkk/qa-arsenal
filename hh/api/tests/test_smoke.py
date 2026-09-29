@@ -7,6 +7,8 @@ from api.vacancies_api import VacanciesApi
 from validators.response_validator import ResponseValidator
 
 
+pytestmark = pytest.mark.integration
+
 @allure.feature("Smoke тесты")
 @allure.story("Быстрая проверка API")
 class TestSmoke:

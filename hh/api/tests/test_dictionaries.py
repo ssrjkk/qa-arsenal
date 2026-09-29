@@ -5,6 +5,8 @@ from api.dictionaries_api import DictionariesApi
 from validators.response_validator import ResponseValidator
 
 
+pytestmark = pytest.mark.integration
+
 @allure.feature("Dictionaries API")
 @allure.story("Справочники")
 class TestDictionaries:
@@ -71,6 +73,8 @@ class TestDictionaries:
         for expected_id in expected_ids:
             assert expected_id in ids, f"ID '{expected_id}' не найден"
 
+
+pytestmark = pytest.mark.integration
 
 @allure.feature("Dictionaries API")
 @allure.story("Производительность")

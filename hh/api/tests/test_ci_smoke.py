@@ -5,6 +5,8 @@ from api.dictionaries_api import DictionariesApi
 from api.vacancies_api import VacanciesApi
 
 
+pytestmark = pytest.mark.integration
+
 @pytest.mark.ci
 class TestCISmoke:
     def test_vacancies_api_responds(self, vacancies_api: VacanciesApi) -> None:

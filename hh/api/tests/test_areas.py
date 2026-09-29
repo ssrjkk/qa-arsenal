@@ -5,6 +5,8 @@ from api.areas_api import AreasApi
 from validators.response_validator import ResponseValidator
 
 
+pytestmark = pytest.mark.integration
+
 @allure.feature("Areas API")
 @allure.story("Список регионов")
 class TestAreas:
@@ -40,6 +42,8 @@ class TestAreas:
             assert field in area, f"Поле '{field}' отсутствует в регионе"
 
 
+pytestmark = pytest.mark.integration
+
 @allure.feature("Areas API")
 @allure.story("Поиск регионов")
 class TestAreaSearch:
@@ -74,6 +78,8 @@ class TestAreaSearch:
         assert spb is not None, "Санкт-Петербург (id=2) не найден"
 
 
+pytestmark = pytest.mark.integration
+
 @allure.feature("Areas API")
 @allure.story("Получение региона по ID")
 class TestAreaById:
@@ -87,6 +93,8 @@ class TestAreaById:
 
         ResponseValidator(response).status(200).has_keys(["id", "name"]).raise_if_errors()
 
+
+pytestmark = pytest.mark.integration
 
 @allure.feature("Areas API")
 @allure.story("Производительность")
