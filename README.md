@@ -48,9 +48,9 @@ value on top:
 qa-arsenal/
 ├── hh/                      # hh.ru (headhunter)
 │   ├── api/                 #   REST API tests   — Python/pytest (95: 68 unit + 27 integration)
-│   └── ui/                  #   E2E UI tests     — TypeScript/Playwright + vitest unit (35)
+│   └── ui/                  #   E2E UI tests     — TypeScript/Playwright + vitest unit (46)
 ├── guap/                    # guap.ru
-│   ├── python/              #   API + UI + load + SQL — Python/pytest (58: 28 unit + 30 integration)
+│   ├── python/              #   API + UI + load + SQL — Python/pytest (69: 39 unit + 30 integration)
 │   └── go/                  #   API tests + SQL tasks — Go (55: 15 unit + 40 integration)
 └── amocrm/                  # amoCRM — API, DB, Kafka, load, UI, cross-browser (245: 29 unit + 216 integration)
 ```
@@ -60,8 +60,8 @@ qa-arsenal/
 | Target | Tests | Hermetic in CI | Maturity |
 |--------|------:|---------------:|----------|
 | `hh/api` | 95 (68 unit + 27 integration) | 68 unit + contract | mature — layered architecture, mocks, validation |
-| `hh/ui` | 35 (29 unit + 6 E2E) | 29 unit + typecheck + lint | growing — E2E runs against a live/mock app |
-| `guap/python` | 58 (28 unit + 30 integration) | 28 unit | working |
+| `hh/ui` | 46 (40 unit + 6 E2E) | 40 unit + typecheck + lint | growing — E2E runs against a live/mock app |
+| `guap/python` | 69 (39 unit + 30 integration) | 39 unit | working |
 | `guap/go` | 55 (15 unit + 40 integration) | 15 unit + build + vet | working |
 | `amocrm` | 245 (29 unit + 216 integration) | 29 unit | mature — largest, multi-pipeline (API/DB/Kafka/UI/load) |
 
@@ -133,8 +133,8 @@ needs real credentials:
 | job | what runs |
 |-----|-----------|
 | `hh/api` | 68 unit + contract tests (coverage measured) |
-| `hh/ui` | 29 unit tests (`vitest run`) + typecheck + lint |
-| `guap/python` | 28 unit tests (coverage measured) + `pytest --collect-only` |
+| `hh/ui` | 40 unit tests (`vitest run`) + typecheck + lint |
+| `guap/python` | 39 unit tests (coverage measured) + `pytest --collect-only` |
 | `guap/go` | `go build ./...` + `go vet ./...` + `go test ./unit/...` |
 | `amocrm` | 29 unit tests (coverage measured) + `pytest --collect-only` |
 
