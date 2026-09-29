@@ -48,10 +48,10 @@
 qa-arsenal/
 ├── hh/                      # hh.ru (headhunter)
 │   ├── api/                 #   REST API тесты   — Python/pytest (95: 68 unit + 27 integration)
-│   └── ui/                  #   E2E UI тесты     — TypeScript/Playwright + vitest unit (29)
+│   └── ui/                  #   E2E UI тесты     — TypeScript/Playwright + vitest unit (35)
 ├── guap/                    # guap.ru
 │   ├── python/              #   API + UI + load + SQL — Python/pytest (58: 28 unit + 30 integration)
-│   └── go/                  #   API тесты + SQL-задачи — Go (53: 13 unit + 40 integration)
+│   └── go/                  #   API тесты + SQL-задачи — Go (55: 15 unit + 40 integration)
 └── amocrm/                  # amoCRM — API, БД, Kafka, load, UI, кроссбраузер (245: 29 unit + 216 integration)
 ```
 
@@ -60,9 +60,9 @@ qa-arsenal/
 | Таргет | Тестов | Hermetic в CI | Зрелость |
 |--------|-------:|--------------:|----------|
 | `hh/api` | 95 (68 unit + 27 integration) | 68 unit + контракты | зрелый — слоистая архитектура, моки, валидация |
-| `hh/ui` | 29 (23 unit + 6 E2E) | 23 unit + typecheck + lint | растёт — E2E против живого/mock-приложения |
+| `hh/ui` | 35 (29 unit + 6 E2E) | 29 unit + typecheck + lint | растёт — E2E против живого/mock-приложения |
 | `guap/python` | 58 (28 unit + 30 integration) | 28 unit | рабочий |
-| `guap/go` | 53 (13 unit + 40 integration) | 13 unit + build + vet | рабочий |
+| `guap/go` | 55 (15 unit + 40 integration) | 15 unit + build + vet | рабочий |
 | `amocrm` | 245 (29 unit + 216 integration) | 29 unit | зрелый — крупнейший, мульти-пайплайн (API/БД/Kafka/UI/load) |
 
 ## Известные ограничения (честно)
@@ -133,7 +133,7 @@ cd amocrm && pip install -r requirements.txt && pytest
 | Джоба | Что выполняется |
 |-------|-----------------|
 | `hh/api` | 68 unit + контрактные тесты (замер coverage) |
-| `hh/ui` | 23 unit-теста (`vitest run`) + typecheck + lint |
+| `hh/ui` | 29 unit-тестов (`vitest run`) + typecheck + lint |
 | `guap/python` | 28 unit-тестов (замер coverage) + `pytest --collect-only` |
 | `guap/go` | `go build ./...` + `go vet ./...` + `go test ./unit/...` |
 | `amocrm` | 29 unit-тестов (замер coverage) + `pytest --collect-only` |

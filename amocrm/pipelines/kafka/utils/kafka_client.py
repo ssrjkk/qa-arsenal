@@ -2,6 +2,7 @@ import json
 import logging
 from kafka import KafkaProducer as _KafkaProducer
 from kafka import KafkaConsumer as _KafkaConsumer
+from kafka.admin import KafkaAdminClient, NewTopic
 from config.settings import KAFKA_BROKERS
 from typing import Callable, Optional
 import time
@@ -125,7 +126,16 @@ class KafkaClient:
         return self._consumers[key]
 
     def create_topic(self, topic: str, partitions: int = 1, replication: int = 1):
-        logger.info("Topic creation not implemented - using auto-create")
+        admin = KafkaAdminClient(bootstrap_servers=self.brokers)
+        try:
+            admin.create_topics(
+                [NewTopic(name=topic, num_partitions=partitions, replication_factor=replication)]
+            )
+            logger.info(f"Topic '{topic}' created ({partitions} partitions)")
+        except Exception as e:
+            logger.warning(f"Could not create topic '{topic}': {e}")
+        finally:
+            admin.close()
 
     def close(self):
         if self._producer:

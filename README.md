@@ -48,10 +48,10 @@ value on top:
 qa-arsenal/
 ├── hh/                      # hh.ru (headhunter)
 │   ├── api/                 #   REST API tests   — Python/pytest (95: 68 unit + 27 integration)
-│   └── ui/                  #   E2E UI tests     — TypeScript/Playwright + vitest unit (29)
+│   └── ui/                  #   E2E UI tests     — TypeScript/Playwright + vitest unit (35)
 ├── guap/                    # guap.ru
 │   ├── python/              #   API + UI + load + SQL — Python/pytest (58: 28 unit + 30 integration)
-│   └── go/                  #   API tests + SQL tasks — Go (53: 13 unit + 40 integration)
+│   └── go/                  #   API tests + SQL tasks — Go (55: 15 unit + 40 integration)
 └── amocrm/                  # amoCRM — API, DB, Kafka, load, UI, cross-browser (245: 29 unit + 216 integration)
 ```
 
@@ -60,9 +60,9 @@ qa-arsenal/
 | Target | Tests | Hermetic in CI | Maturity |
 |--------|------:|---------------:|----------|
 | `hh/api` | 95 (68 unit + 27 integration) | 68 unit + contract | mature — layered architecture, mocks, validation |
-| `hh/ui` | 29 (23 unit + 6 E2E) | 23 unit + typecheck + lint | growing — E2E runs against a live/mock app |
+| `hh/ui` | 35 (29 unit + 6 E2E) | 29 unit + typecheck + lint | growing — E2E runs against a live/mock app |
 | `guap/python` | 58 (28 unit + 30 integration) | 28 unit | working |
-| `guap/go` | 53 (13 unit + 40 integration) | 13 unit + build + vet | working |
+| `guap/go` | 55 (15 unit + 40 integration) | 15 unit + build + vet | working |
 | `amocrm` | 245 (29 unit + 216 integration) | 29 unit | mature — largest, multi-pipeline (API/DB/Kafka/UI/load) |
 
 ## Known limitations (honest)
@@ -72,7 +72,7 @@ qa-arsenal/
   integration suites pass; run `make test` locally with a real `.env` for that.
 - **No coverage gate** — some targets carry coverage config, but the monorepo does not enforce a
   coverage threshold on merges.
-- **`hh/ui` is the thinnest E2E target** — 6 E2E specs only; it has a 12-test unit layer plus
+- **`hh/ui` is the thinnest E2E target** — 6 E2E specs only; it has a 29-test unit layer plus
   typecheck + lint in CI, but no automated browser run in the pipeline.
 - **Code style differs between targets** — each was built independently with its own stack and
   conventions. The monorepo standardizes the *interface* (Makefile, CI, README), not the internals.
@@ -133,7 +133,7 @@ needs real credentials:
 | job | what runs |
 |-----|-----------|
 | `hh/api` | 68 unit + contract tests (coverage measured) |
-| `hh/ui` | 23 unit tests (`vitest run`) + typecheck + lint |
+| `hh/ui` | 29 unit tests (`vitest run`) + typecheck + lint |
 | `guap/python` | 28 unit tests (coverage measured) + `pytest --collect-only` |
 | `guap/go` | `go build ./...` + `go vet ./...` + `go test ./unit/...` |
 | `amocrm` | 29 unit tests (coverage measured) + `pytest --collect-only` |
