@@ -76,7 +76,6 @@ amoCRM/
 │   └── logs/                            # Log analysis
 │
 ├── fixtures/                            # Фабрики тестовых данных
-├── .github/workflows/                   # CI/CD
 ├── config/                              # Конфигурация
 └── docs/                                # Документация
 ```

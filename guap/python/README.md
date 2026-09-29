@@ -74,9 +74,7 @@ allure serve allure-results
 │   └── factories.py
 ├── config/                     # Конфигурация из .env
 │   └── settings.py
-├── conftest.py                 # Глобальные фикстуры
-└── .github/workflows/          # CI/CD
-    └── ci.yml
+└── conftest.py                 # Глобальные фикстуры
 ```
 
 ---
