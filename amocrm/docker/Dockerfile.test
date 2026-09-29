@@ -1,0 +1,23 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpq5 \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+RUN playwright install --with-deps chromium
+
+COPY . .
+
+ENV PYTHONUNBUFFERED=1
+ENV APP_URL=http://localhost:8080
+ENV DATABASE_URL=postgresql://user:pass@localhost:5432/amocrm
+ENV KAFKA_BROKERS=localhost:9092
+
+CMD ["pytest", "pipelines/", "-v", "--alluredir=reports/allure-results"]

@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  tests:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      - CI=true
+      - BASE_URL=https://api.hh.ru
+      - TIMEOUT=30
+    command: python -m pytest tests/ -v --tb=short -m "not slow"
+
+  lint:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.test
+    environment:
+      - CI=true
+    command: sh -c "ruff check . && black --check . && mypy api core models validators fixtures"

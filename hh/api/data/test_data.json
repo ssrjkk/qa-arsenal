@@ -1,0 +1,58 @@
+{
+  "search_queries": {
+    "valid": [
+      "QA engineer",
+      "Python developer",
+      "DevOps",
+      "JavaScript",
+      "Data Scientist"
+    ],
+    "invalid": [
+      "",
+      "   ",
+      "x"
+    ],
+    "boundary": {
+      "empty_string": "",
+      "single_char": "a",
+      "max_length": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+  },
+  "areas": {
+    "spb": "2",
+    "moscow": "1",
+    "ekb": "3",
+    "novosibirsk": "4",
+    "kazan": "88"
+  },
+  "experience_ids": [
+    "noExperience",
+    "between1And3",
+    "between3And6",
+    "moreThan6"
+  ],
+  "employment_ids": [
+    "full",
+    "part",
+    "project",
+    "volunteer",
+    "probation"
+  ],
+  "schedule_ids": [
+    "fullDay",
+    "shift",
+    "flexible",
+    "remote",
+    "flyInFlyOut"
+  ],
+  "vacancy_test_data": {
+    "valid_per_page_values": [5, 10, 20, 50, 100],
+    "max_per_page": 100,
+    "default_per_page": 20
+  },
+  "expected_response_times": {
+    "vacancies_search": 3000,
+    "areas": 3000,
+    "dictionaries": 2000
+  }
+}

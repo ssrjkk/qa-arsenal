@@ -1,0 +1,83 @@
+[project]
+name = "api-testing-framework"
+version = "1.0.0"
+description = "Production-ready API testing framework"
+requires-python = ">=3.11"
+dependencies = [
+    "pytest>=8.1.1",
+    "requests>=2.31.0",
+    "pydantic>=2.5.0",
+    "tenacity>=8.2.0",
+    "allure-pytest>=2.13.2",
+    "python-dotenv>=1.0.1",
+    "pytest-xdist>=3.5.0",
+    "jsonschema>=4.17.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.1.0",
+    "black>=23.12.0",
+    "mypy>=1.8.0",
+    "pytest-cov>=4.1.0",
+]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "smoke: быстрая проверка критического функционала",
+    "api: тесты API",
+    "integration: интеграционные тесты",
+    "slow: медленные тесты (исключать в CI)",
+    "ci: тесты для CI",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning",
+]
+
+[tool.black]
+line-length = 99
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 99
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "requests.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "urllib3.*"
+ignore_missing_imports = true
+
+[tool.coverage.run]
+source = ["api", "core", "models", "validators", "fixtures"]
+omit = ["tests/*", "*/conftest.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+]

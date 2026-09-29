@@ -1,0 +1,15 @@
+*.md
+*.json
+*.yml
+*.yaml
+*.lock
+node_modules/
+test-results/
+playwright-report/
+allure-results/
+dist/
+.env*
+Dockerfile
+docker-compose.yml
+mock-server.js
+load-tests/
