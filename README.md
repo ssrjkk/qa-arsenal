@@ -24,8 +24,11 @@ CI workflows and Docker files, so a target can be run without touching the other
 ## Quick start
 
 ```sh
-# run everything
+# run everything (needs .env + real APIs)
 make test
+
+# hermetic checks without external dependencies (same as CI)
+make check
 
 # individual targets
 make test-hh-api      # hh.ru REST API
@@ -79,4 +82,4 @@ pipeline stays green and signals real problems only.
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).
