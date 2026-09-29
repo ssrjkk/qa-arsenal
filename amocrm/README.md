@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org)
 [![pytest](https://img.shields.io/badge/pytest-8.0+-0A9EDC?logo=pytest&logoColor=white)](https://docs.pytest.org)
 [![Playwright](https://img.shields.io/badge/Playwright-1.40+-2EAD33?logo=playwright&logoColor=white)](https://playwright.dev)
-[![CI/CD](https://github.com/ssrjkk/qa-arsenal/tree/master/amocrm/actions/workflows/ci.yml/badge.svg)](https://github.com/ssrjkk/qa-arsenal/tree/master/amocrm/actions)
+[![CI/CD](https://github.com/ssrjkk/qa-arsenal/actions/workflows/ci.yml/badge.svg)](https://github.com/ssrjkk/qa-arsenal/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Allure Report](https://img.shields.io/badge/report-allure-00a0ff)](https://allurereport.org)
 
@@ -30,7 +30,7 @@
 
 ```bash
 # 1. Клонировать и запустить инфраструктуру
-git clone https://github.com/ssrjkk/qa-arsenal/tree/master/amocrm.git
+git clone https://github.com/ssrjkk/qa-arsenal.git
 cd amocrm-tests
 
 # 2. Запустить все сервисы (PostgreSQL, Kafka, Elasticsearch, Selenium Grid)

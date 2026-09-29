@@ -4,7 +4,7 @@
 ![Playwright](https://img.shields.io/badge/Playwright-1.42-green?logo=playwright&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-20.x-brightgreen?logo=node.js&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker&logoColor=white)
-![CI](https://github.com/ssrjkk/qa-arsenal/tree/master/hh/ui/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/ssrjkk/qa-arsenal/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-yellow)
 
 ## Stack

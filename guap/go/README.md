@@ -5,8 +5,8 @@
 ![Coverage](https://img.shields.io/badge/coverage-78%25-yellow)
 ![Run](https://img.shields.io/badge/run-~15sec-blue)
 ![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker&logoColor=white)
-![CI](https://github.com/ssrjkk/qa-arsenal/tree/master/guap/go/actions/workflows/ci.yml/badge.svg)
-![Last Commit](https://img.shields.io/github/last-commit/ssrjkk/qa-arsenal/tree/master/guap/go)
+![CI](https://github.com/ssrjkk/qa-arsenal/actions/workflows/ci.yml/badge.svg)
+![Last Commit](https://img.shields.io/github/last-commit/ssrjkk/qa-arsenal)
 ![License](https://img.shields.io/badge/license-MIT-yellow)
 
 ## Зачем этот проект
@@ -26,7 +26,7 @@
 
 ```bash
 # Клонировать
-git clone https://github.com/ssrjkk/qa-arsenal/tree/master/guap/go.git
+git clone https://github.com/ssrjkk/qa-arsenal.git
 cd guap-tests-go
 
 # Запустить тесты
