@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.hypothesis/
+.benchmarks/
+.coverage
+coverage.xml
+htmlcov/
+
+# Node / TypeScript
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Go
+*.exe
+*.test
+*.out
+
+# Env / secrets
+.env
+.env.*
+
+# Reports
+allure-results/
+allure-report/
+playwright-report/
+test-results/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
