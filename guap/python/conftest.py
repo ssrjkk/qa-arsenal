@@ -22,12 +22,6 @@ def pytest_addoption(parser):
         help="Environment: local, dev, staging, prod"
     )
     parser.addoption(
-        "--browser",
-        action="store",
-        default="chrome",
-        help="Browser for UI tests: chrome, firefox, edge"
-    )
-    parser.addoption(
         "--headless",
         action="store_true",
         default=True,

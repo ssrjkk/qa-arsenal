@@ -44,6 +44,7 @@ jobs:
           cache: npm
           cache-dependency-path: hh/ui/package-lock.json
       - run: npm ci
+      - run: npm run test:unit
       - run: npm run typecheck
       - run: npm run lint
 
@@ -60,7 +61,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python -m compileall -q api_client api_tests ui_tests
+      - run: python -m compileall -q api_client api_tests ui_tests unit_tests
+      - run: pytest -q unit_tests/
       - run: pytest --collect-only -q
 
   guap-go:
@@ -77,6 +79,7 @@ jobs:
           go-version: "1.21"
       - run: go build ./...
       - run: go vet ./...
+      - run: go test ./unit/...
 
   amocrm:
     name: amocrm — import + collect check
@@ -91,5 +94,6 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python -m compileall -q pipelines src tests
+      - run: python -m compileall -q pipelines src tests unit_tests
+      - run: pytest -q unit_tests/
       - run: pytest --collect-only -q
