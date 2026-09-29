@@ -1,0 +1,60 @@
+[project]
+name = "amocrm-qa"
+version = "1.0.0"
+description = "QA Automation Framework for amoCRM Demo App"
+requires-python = ">=3.10"
+readme = "README.md"
+
+dependencies = [
+    "pytest>=7.4.3",
+    "pytest-xdist>=3.5.0",
+    "allure-pytest>=2.13.2",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+    "psycopg2-binary>=2.9.9",
+    "kafka-python>=2.0.2",
+    "locust>=2.20.0",
+    "selenium>=4.15.2",
+]
+
+[project.optional-dependencies]
+api = ["requests>=2.31.0", "jsonschema>=4.20.0"]
+db = ["psycopg2-binary>=2.9.9"]
+ui = ["selenium>=4.15.2", "webdriver-manager>=4.0.1"]
+kafka = ["kafka-python>=2.0.2"]
+load = ["locust>=2.20.0"]
+k8s = ["kubernetes>=28.1.0"]
+logs = ["elasticsearch>=8.11.0"]
+all = ["amocrm-qa[api,db,ui,kafka,load,k8s,logs]"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.pytest.ini_options.markers]
+api = "API tests"
+db = "Database tests"
+ui = "UI tests"
+kafka = "Kafka tests"
+load = "Load tests"
+k8s = "K8s tests"
+logs = "Log analysis tests"
+smoke = "Smoke tests"
+critical = "Critical tests"
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+ignore = ["E402", "E741", "F811"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+ignore_missing_imports = true

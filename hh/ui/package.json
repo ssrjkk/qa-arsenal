@@ -1,0 +1,36 @@
+{
+  "name": "e2e-playwright-ts",
+  "version": "1.0.0",
+  "description": "Playwright E2E tests with API layer, Page Objects, and CI/CD",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:critical": "playwright test --grep @critical",
+    "test:api": "playwright test --grep @api",
+    "test:report": "playwright show-report",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "typecheck": "tsc --noEmit",
+    "docker:build": "docker build -t playwright-tests .",
+    "docker:run": "docker run --rm playwright-tests",
+    "docker:compose": "docker-compose up -d",
+    "mock:server": "node mock-server.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.42.0",
+    "@types/node": "^20.11.0",
+    "@types/uuid": "^9.0.8",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.56.0",
+    "express": "^4.18.2",
+    "prettier": "^3.2.0",
+    "typescript": "^5.3.3",
+    "uuid": "^9.0.1"
+  }
+}

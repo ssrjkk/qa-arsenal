@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-tests
+  namespace: default
+  labels:
+    app: api-tests
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-tests
+  template:
+    metadata:
+      labels:
+        app: api-tests
+    spec:
+      containers:
+        - name: api-tests
+          image: api-tests:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: api-tests-config
+          env:
+            - name: ENV
+              valueFrom:
+                secretKeyRef:
+                  name: api-tests-secrets
+                  key: ENV
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          command:
+            - python
+            - -m
+            - pytest
+            - tests/
+            - -v
+            - --tb=short

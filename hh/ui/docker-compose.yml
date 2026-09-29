@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  mock-server:
+    image: node:20-alpine
+    working_dir: /app
+    command: node mock-server.js
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+
+  tests:
+    build: .
+    depends_on:
+      - mock-server
+    environment:
+      - CI=true
+      - BASE_URL=http://mock-server:3000
+      - API_BASE_URL=http://mock-server:3000
+      - BROWSERS=chromium
+    command: npm test
+    volumes:
+      - ./test-results:/app/test-results
+      - ./playwright-report:/app/playwright-report

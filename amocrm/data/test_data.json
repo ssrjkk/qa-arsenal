@@ -1,0 +1,20 @@
+{
+  "contacts": [
+    {"id": 1, "name": "John Doe", "email": "john@example.com", "phone": "+1234567890"},
+    {"id": 2, "name": "Jane Smith", "email": "jane@example.com", "phone": "+0987654321"}
+  ],
+  "companies": [
+    {"id": 1, "name": "Acme Corp", "website": "https://acme.com", "phone": "+1111111111"},
+    {"id": 2, "name": "Tech Inc", "website": "https://tech.inc", "phone": "+2222222222"}
+  ],
+  "deals": [
+    {"id": 1, "name": "Big Deal", "price": 50000, "status": "pending"},
+    {"id": 2, "name": "Small Deal", "price": 5000, "status": "won"}
+  ],
+  "search_queries": [
+    "John",
+    "Doe",
+    "Acme",
+    "tech"
+  ]
+}
