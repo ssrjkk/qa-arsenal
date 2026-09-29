@@ -1,0 +1,22 @@
+# Repository Settings Configuration
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-repository-files
+
+repository:
+  name: amoCRM
+  description: QA Automation Framework for amoCRM - API, UI, DB, Kafka, Load Testing
+  homepage: https://github.com/ssrjkk/amoCRM
+  topics:
+    - python
+    - pytest
+    - playwright
+    - selenium
+    - automation
+    - testing
+    - kafka
+    - postgresql
+    - locust
+    - kubernetes
+  private: false
+  has_issues: true
+  has_projects: false
+  has_wiki: false
