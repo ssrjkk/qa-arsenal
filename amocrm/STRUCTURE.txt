@@ -1,4 +1,4 @@
-amoCRM/
+amocrm/
 ├── tests/                 # Unit тесты
 │   ├── test_smoke.py     # Smoke тесты
 │   ├── test_contacts.py  # Contacts CRUD
@@ -18,5 +18,5 @@ amoCRM/
 ├── core/              # Core utilities
 ├── fixtures/          # Test fixtures
 ├── config/           # Configuration
-├── .github/workflows/# CI/CD
+├── CI: корневой .github/workflows/ci.yml репо qa-arsenal
 └── docker/           # Docker files

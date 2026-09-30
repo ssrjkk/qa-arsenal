@@ -27,7 +27,7 @@ jobs:
       - run: pip install -r requirements.txt
       # Integration tests hit the live hh.ru API (403 without a real token + UA);
       # unit/contract tests are hermetic and run here.
-      - run: pytest -m "not integration" -q
+      - run: pytest -m "not integration" -q --cov=core --cov=validators --cov=api --cov-report=term-missing
 
   hh-ui:
     name: hh/ui — typecheck + lint
@@ -44,6 +44,7 @@ jobs:
           cache: npm
           cache-dependency-path: hh/ui/package-lock.json
       - run: npm ci
+      - run: npm run test:unit
       - run: npm run typecheck
       - run: npm run lint
 
@@ -60,7 +61,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python -m compileall -q api_client api_tests ui_tests
+      - run: python -m compileall -q api_client api_tests ui_tests unit_tests
+      - run: pytest -q unit_tests/ --cov=api_client --cov=config --cov-report=term-missing
       - run: pytest --collect-only -q
 
   guap-go:
@@ -77,6 +79,7 @@ jobs:
           go-version: "1.21"
       - run: go build ./...
       - run: go vet ./...
+      - run: go test ./unit/...
 
   amocrm:
     name: amocrm — import + collect check
@@ -91,5 +94,6 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python -m compileall -q pipelines src tests
+      - run: python -m compileall -q pipelines src tests unit_tests
+      - run: pytest -q unit_tests/ --cov=core --cov=models --cov=validators --cov-report=term-missing
       - run: pytest --collect-only -q

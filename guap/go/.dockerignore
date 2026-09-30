@@ -1,0 +1,19 @@
+# VCS
+.git
+.github
+
+# Go
+*.exe
+*.test
+*.out
+coverage/
+coverage.out
+
+# Env
+.env
+.env.*
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store

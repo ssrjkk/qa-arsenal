@@ -1,0 +1,23 @@
+# VCS
+.git
+.github
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.coverage
+coverage.xml
+htmlcov/
+allure-results/
+allure-report/
+
+# Env
+.env
+.env.*
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store

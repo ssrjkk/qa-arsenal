@@ -1,0 +1,19 @@
+# VCS
+.git
+.github
+
+# Node
+node_modules/
+dist/
+*.tsbuildinfo
+playwright-report/
+test-results/
+
+# Env
+.env
+.env.*
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store

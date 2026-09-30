@@ -78,8 +78,13 @@ export class TodosPage extends BasePage {
     await deleteBtn.click().catch(() => {});
   }
 
-  async editTodo(_oldTitle: string, _newTitle: string): Promise<void> {
-    // Not implemented in mock
+  async editTodo(oldTitle: string, newTitle: string): Promise<void> {
+    const item = this.page.locator(this.todoItem).filter({ hasText: oldTitle }).first();
+    const editBtn = item.locator('button.edit');
+    await editBtn.click();
+    const input = item.locator('input.edit');
+    await input.fill(newTitle);
+    await input.press('Enter');
   }
 
   async filterAllTodos(): Promise<void> {

@@ -47,13 +47,37 @@ value on top:
 ```
 qa-arsenal/
 ├── hh/                      # hh.ru (headhunter)
-│   ├── api/                 #   REST API tests   — Python/pytest (~67 tests)
-│   └── ui/                  #   E2E UI tests     — TypeScript/Playwright
+│   ├── api/                 #   REST API tests   — Python/pytest (101: 74 unit + 27 integration)
+│   └── ui/                  #   E2E UI tests     — TypeScript/Playwright + vitest unit (54)
 ├── guap/                    # guap.ru
-│   ├── python/              #   API + UI + load + SQL — Python/pytest (~30 tests)
-│   └── go/                  #   API tests + SQL tasks — Go (~40 tests)
-└── amocrm/                  # amoCRM — API, DB, Kafka, load, UI, cross-browser (~230 tests)
+│   ├── python/              #   API + UI + load + SQL — Python/pytest (69: 39 unit + 30 integration)
+│   └── go/                  #   API tests + SQL tasks — Go (62: 22 unit + 40 integration)
+└── amocrm/                  # amoCRM — API, DB, Kafka, load, UI, cross-browser (275: 59 unit + 216 integration)
 ```
+
+## Target status
+
+| Target | Tests | Hermetic in CI | Maturity |
+|--------|------:|---------------:|----------|
+| `hh/api` | 101 (74 unit + 27 integration) | 74 unit + contract | mature — layered architecture, mocks, validation |
+| `hh/ui` | 54 (48 unit + 6 E2E) | 48 unit + typecheck + lint | growing — E2E runs against a live/mock app |
+| `guap/python` | 69 (39 unit + 30 integration) | 39 unit | working |
+| `guap/go` | 62 (22 unit + 40 integration) | 22 unit + build + vet | working |
+| `amocrm` | 275 (59 unit + 216 integration) | 59 unit | mature — largest, multi-pipeline (API/DB/Kafka/UI/load) |
+
+## Known limitations (honest)
+
+- **Integration tests need live APIs and credentials** (`.env`). They are *not* run in CI — CI
+  only checks hermetic unit tests and build health. A green pipeline does **not** prove the
+  integration suites pass; run `make test` locally with a real `.env` for that.
+- **No coverage gate** — some targets carry coverage config, but the monorepo does not enforce a
+  coverage threshold on merges.
+- **`hh/ui` is the thinnest E2E target** — 6 E2E specs only; it has a 29-test unit layer plus
+  typecheck + lint in CI, but no automated browser run in the pipeline.
+- **Code style differs between targets** — each was built independently with its own stack and
+  conventions. The monorepo standardizes the *interface* (Makefile, CI, README), not the internals.
+- **`amocrm` is heavy** — the biggest suite; a full local run needs PostgreSQL, Kafka, Selenium
+  Grid and Elasticsearch (see its `docker-compose`).
 
 ---
 
@@ -108,11 +132,11 @@ needs real credentials:
 
 | job | what runs |
 |-----|-----------|
-| `hh/api` | unit + contract tests (`pytest -m "not integration"`) |
-| `hh/ui` | typecheck (`tsc --noEmit`) + lint |
-| `guap/python` | bytecode compile + `pytest --collect-only` |
-| `guap/go` | `go build ./...` + `go vet ./...` |
-| `amocrm` | bytecode compile + `pytest --collect-only` |
+| `hh/api` | 74 unit + contract tests (coverage measured) |
+| `hh/ui` | 48 unit tests (`vitest run`) + typecheck + lint |
+| `guap/python` | 39 unit tests (coverage measured) + `pytest --collect-only` |
+| `guap/go` | `go build ./...` + `go vet ./...` + `go test ./unit/...` |
+| `amocrm` | 59 unit tests (coverage measured) + `pytest --collect-only` |
 
 Live integration tests (real hh.ru / guap.ru / amoCRM APIs, Playwright against a running app)
 require `.env` credentials and are run **locally** (`make test`) or on a schedule with secrets.
@@ -124,7 +148,15 @@ problems only.
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) — how to add a target, run checks, and what a pull
-request must satisfy.
+request must satisfy. Security reporting: see [SECURITY.md](SECURITY.md).
+
+## History archive
+
+The original commit history of the consolidated repositories (`hh-playwright`, `guap-tests-go`,
+`amocrm-tests`) is preserved in the public archive repo
+[`ssrjkk/qa-history`](https://github.com/ssrjkk/qa-history) (branches `history/*`).
+`hh-api-tests` and `guap-tests-python` were deleted before consolidation; their code is included
+here, but their git history was lost.
 
 ## License
 

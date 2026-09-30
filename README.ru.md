@@ -47,13 +47,37 @@
 ```
 qa-arsenal/
 ├── hh/                      # hh.ru (headhunter)
-│   ├── api/                 #   REST API тесты   — Python/pytest (~67 тестов)
-│   └── ui/                  #   E2E UI тесты     — TypeScript/Playwright
+│   ├── api/                 #   REST API тесты   — Python/pytest (101: 74 unit + 27 integration)
+│   └── ui/                  #   E2E UI тесты     — TypeScript/Playwright + vitest unit (54)
 ├── guap/                    # guap.ru
-│   ├── python/              #   API + UI + load + SQL — Python/pytest (~30 тестов)
-│   └── go/                  #   API тесты + SQL-задачи — Go (~40 тестов)
-└── amocrm/                  # amoCRM — API, БД, Kafka, load, UI, кроссбраузер (~230 тестов)
+│   ├── python/              #   API + UI + load + SQL — Python/pytest (69: 39 unit + 30 integration)
+│   └── go/                  #   API тесты + SQL-задачи — Go (62: 22 unit + 40 integration)
+└── amocrm/                  # amoCRM — API, БД, Kafka, load, UI, кроссбраузер (275: 59 unit + 216 integration)
 ```
+
+## Статус таргетов
+
+| Таргет | Тестов | Hermetic в CI | Зрелость |
+|--------|-------:|--------------:|----------|
+| `hh/api` | 101 (74 unit + 27 integration) | 74 unit + контракты | зрелый — слоистая архитектура, моки, валидация |
+| `hh/ui` | 54 (48 unit + 6 E2E) | 48 unit + typecheck + lint | растёт — E2E против живого/mock-приложения |
+| `guap/python` | 69 (39 unit + 30 integration) | 39 unit | рабочий |
+| `guap/go` | 62 (22 unit + 40 integration) | 22 unit + build + vet | рабочий |
+| `amocrm` | 275 (59 unit + 216 integration) | 59 unit | зрелый — крупнейший, мульти-пайплайн (API/БД/Kafka/UI/load) |
+
+## Известные ограничения (честно)
+
+- **Интеграционные тесты требуют живых API и credentials** (`.env`). Они *не* выполняются в CI —
+  CI проверяет только hermetic unit-тесты и здоровье сборки. Зелёный пайплайн **не** доказывает,
+  что интеграционные наборы проходят; запускайте `make test` локально с реальным `.env`.
+- **Нет гейта по покрытию** — у части таргетов есть конфиг coverage, но моно-репо не блокирует
+  мержи по порогу покрытия.
+- **`hh/ui` — самый тонкий таргет по E2E** — всего 6 E2E-спецификаций; unit-слой (12 тестов)
+  и typecheck + lint идут в CI, но автоматического браузерного прогона нет.
+- **Стиль кода различается между таргетами** — каждый строился независимо со своим стеком и
+  конвенциями. Моно-репо стандартизует *интерфейс* (Makefile, CI, README), но не внутренности.
+- **`amocrm` тяжёлый** — крупнейший набор; полный локальный запуск требует PostgreSQL, Kafka,
+  Selenium Grid и Elasticsearch (см. его `docker-compose`).
 
 ---
 
@@ -108,11 +132,11 @@ cd amocrm && pip install -r requirements.txt && pytest
 
 | Джоба | Что выполняется |
 |-------|-----------------|
-| `hh/api` | unit + контрактные тесты (`pytest -m "not integration"`) |
-| `hh/ui` | typecheck (`tsc --noEmit`) + lint |
-| `guap/python` | компиляция + `pytest --collect-only` |
-| `guap/go` | `go build ./...` + `go vet ./...` |
-| `amocrm` | компиляция + `pytest --collect-only` |
+| `hh/api` | 74 unit + контрактные тесты (замер coverage) |
+| `hh/ui` | 48 unit-тестов (`vitest run`) + typecheck + lint |
+| `guap/python` | 39 unit-тестов (замер coverage) + `pytest --collect-only` |
+| `guap/go` | `go build ./...` + `go vet ./...` + `go test ./unit/...` |
+| `amocrm` | 59 unit-тестов (замер coverage) + `pytest --collect-only` |
 
 Живые интеграционные тесты (реальные API hh.ru / guap.ru / amoCRM, Playwright против
 работающего приложения) требуют credentials из `.env` и запускаются **локально** (`make test`)
@@ -124,7 +148,15 @@ cd amocrm && pip install -r requirements.txt && pytest
 ## Участие
 
 См. [CONTRIBUTING.md](CONTRIBUTING.md) — как добавить таргет, запускать проверки и что должно
-быть в pull request.
+быть в pull request. Сообщение об уязвимостях: см. [SECURITY.md](SECURITY.md).
+
+## Архив истории
+
+Оригинальная история коммитов консолидированных репозиториев (`hh-playwright`, `guap-tests-go`,
+`amocrm-tests`) сохранена в публичном архиве
+[`ssrjkk/qa-history`](https://github.com/ssrjkk/qa-history) (ветки `history/*`).
+`hh-api-tests` и `guap-tests-python` были удалены до консолидации; их код включён сюда, но их
+git-история утрачена.
 
 ## Лицензия
 
