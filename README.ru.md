@@ -153,7 +153,7 @@ cd amocrm && pip install -r requirements.txt && pytest
 ## Архив истории
 
 Оригинальная история коммитов консолидированных репозиториев (`hh-playwright`, `guap-tests-go`,
-`amocrm-tests`) сохранена в приватном архиве
+`amocrm-tests`) сохранена в публичном архиве
 [`ssrjkk/qa-history`](https://github.com/ssrjkk/qa-history) (ветки `history/*`).
 `hh-api-tests` и `guap-tests-python` были удалены до консолидации; их код включён сюда, но их
 git-история утрачена.
