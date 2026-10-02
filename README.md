@@ -152,11 +152,24 @@ request must satisfy. Security reporting: see [SECURITY.md](SECURITY.md).
 
 ## History archive
 
-The original commit history of the consolidated repositories (`hh-playwright`, `guap-tests-go`,
-`amocrm-tests`) is preserved in the public archive repo
-[`ssrjkk/qa-history`](https://github.com/ssrjkk/qa-history) (branches `history/*`).
+The original commit history of the consolidated repositories is preserved **in this repo**,
+on dedicated `history/*` branches:
+
+| Branch | Former repository | Stack |
+|--------|-------------------|-------|
+| `history/hh-playwright` | `hh-playwright` | TypeScript, Playwright |
+| `history/guap-tests-go` | `guap-tests-go` | Go |
+| `history/amocrm-tests` | `amocrm-tests` | Python, pytest |
+
+```sh
+# browse the original history of a consolidated repo
+git fetch origin
+git log origin/history/hh-playwright --oneline
+git checkout origin/history/amocrm-tests
+```
+
 `hh-api-tests` and `guap-tests-python` were deleted before consolidation; their code is included
-here, but their git history was lost.
+in this repo, but their git history was lost.
 
 ## License
 
