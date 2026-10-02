@@ -153,19 +153,19 @@ request must satisfy. Security reporting: see [SECURITY.md](SECURITY.md).
 ## History archive
 
 The original commit history of the consolidated repositories is preserved **in this repo**,
-on dedicated `history/*` branches:
+on dedicated `history/*` tags:
 
-| Branch | Former repository | Stack |
-|--------|-------------------|-------|
+| Tag | Former repository | Stack |
+|-----|-------------------|-------|
 | `history/hh-playwright` | `hh-playwright` | TypeScript, Playwright |
 | `history/guap-tests-go` | `guap-tests-go` | Go |
 | `history/amocrm-tests` | `amocrm-tests` | Python, pytest |
 
 ```sh
 # browse the original history of a consolidated repo
-git fetch origin
-git log origin/history/hh-playwright --oneline
-git checkout origin/history/amocrm-tests
+git fetch origin --tags
+git log history/hh-playwright --oneline
+git checkout history/amocrm-tests
 ```
 
 `hh-api-tests` and `guap-tests-python` were deleted before consolidation; their code is included
