@@ -1,5 +1,11 @@
 # qa-arsenal
 
+[![CI](https://github.com/ssrjkk/qa-arsenal/actions/workflows/ci.yml/badge.svg)](https://github.com/ssrjkk/qa-arsenal/actions/workflows/ci.yml)
+[python-3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
+
 > **Languages:** [English](README.md) · [Русский](README.ru.md)
 
 [![CI](https://github.com/ssrjkk/qa-arsenal/actions/workflows/ci.yml/badge.svg)](https://github.com/ssrjkk/qa-arsenal/actions)
@@ -174,3 +180,17 @@ in this repo, but their git history was lost.
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+## Installation
+
+```bash
+git clone https://github.com/ssrjkk/qa-arsenal.git
+cd qa-arsenal
+pip install -r requirements.txt
+```
+
+## Usage
+
+```bash
+python main.py
+```
