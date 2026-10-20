@@ -11,6 +11,11 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# CI только читает репозиторий: права объявлены явно, иначе job с умолчанию
+# write-all получает запись в репозиторий «на всякий случай».
+permissions:
+  contents: read
+
 jobs:
   hh-api:
     name: hh/api — unit tests
