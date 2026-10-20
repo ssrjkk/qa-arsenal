@@ -4,6 +4,27 @@ const { v4: uuidv4 } = require('uuid');
 const app = express();
 app.use(express.json());
 
+// Значения из запроса попадают в HTML-шаблон: без экранирования название
+// задачи с тегом вида `<img onerror=…>` исполняется в браузере теста.
+const escapeHtml = (value) =>
+  String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+// Почту разбираем вручную: регулярка вида [^\s@]+@[^\s@]+\.[^\s@]+ на длинном
+// входе из повторяющихся символов даёт квадратичное число возвратов, а запросы
+// сюда приходят из браузера.
+const isEmail = (value) => {
+  const at = value.lastIndexOf('@');
+  if (at <= 0 || at !== value.indexOf('@') || at === value.length - 1) return false;
+  const domain = value.slice(at + 1);
+  const dot = domain.indexOf('.');
+  return dot > 0 && dot < domain.length - 1 && !/\s/.test(value);
+};
+
 const users = new Map();
 const todos = new Map();
 let authToken = null;
@@ -51,9 +72,9 @@ const todosHTML = (todos = []) => `
   <input placeholder="What needs to be done" id="new-todo" />
   <div class="todo-list">
     ${todos.map(t => `
-      <div class="todo-item" data-id="${t.id}">
+      <div class="todo-item" data-id="${escapeHtml(t.id)}">
         <input type="checkbox" name="completed" ${t.completed ? 'checked' : ''} />
-        <span>${t.title}</span>
+        <span>${escapeHtml(t.title)}</span>
         <button class="delete">×</button>
       </div>
     `).join('')}
@@ -79,8 +100,7 @@ app.post('/api/auth/register', (req, res) => {
   if (!email || !name || !password) {
     return res.status(422).json({ message: 'Missing required fields' });
   }
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
+  if (!isEmail(String(email))) {
     return res.status(400).json({ message: 'Invalid email format' });
   }
   if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {

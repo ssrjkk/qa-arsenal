@@ -1,6 +1,22 @@
 import { test as base, APIRequestContext, APIResponse } from '@playwright/test';
 import { IResponse, IApiError, ApiMethod, IRequestConfig } from '../types/api.types';
 
+const SECRET_FIELD = /pass|token|secret|api[-_]?key|authorization|cookie/i;
+
+/** Копия тела с замаскированными секретными полями — только для журнала. */
+function redactBody(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(redactBody);
+  if (value !== null && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([key, item]) => [
+        key,
+        SECRET_FIELD.test(key) ? '[redacted]' : redactBody(item),
+      ]),
+    );
+  }
+  return value;
+}
+
 export class BaseApi {
   public request: APIRequestContext;
   public baseURL: string;
@@ -60,7 +76,9 @@ export class BaseApi {
   private logRequest(method: ApiMethod, url: string, body?: unknown): void {
     console.log(`→ ${method} ${url}`);
     if (body) {
-      console.log('  Body:', JSON.stringify(body, null, 2));
+      // Тела запросов авторизации несут пароли и токены: в открытом виде они
+      // остаются в логе пайплайна и в артефактах отчётов.
+      console.log('  Body:', JSON.stringify(redactBody(body), null, 2));
     }
   }
 

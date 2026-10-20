@@ -39,11 +39,24 @@ export interface ITodoData {
   completed: boolean;
 }
 
+// Выбор случаётся через crypto, а не Math.random: предсказуемый генератор
+// делает «уникальные» почты и пароли повторяемыми между параллельными прогонами,
+// и два набора данных начинают сталкиваться одними и теми же аккаунтами.
+const randomIndex = (length: number): number => {
+  const buffer = new Uint32Array(1);
+  crypto.getRandomValues(buffer);
+  return buffer[0] % length;
+};
+
+const pick = <T>(items: readonly T[]): T => items[randomIndex(items.length)];
+
+const pickChar = (source: string): string => source.charAt(randomIndex(source.length));
+
 const generateRandomString = (length: number): string => {
   const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let result = '';
   for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
+    result += pickChar(chars);
   }
   return result;
 };
@@ -61,23 +74,23 @@ export const DataFactory = {
 
   generateEmail: (prefix?: string): string => {
     const id = generateId().slice(0, 8);
-    const domain = DOMAINS[Math.floor(Math.random() * DOMAINS.length)];
+    const domain = pick(DOMAINS);
     const emailPrefix = prefix || `user${id}`;
     return `${emailPrefix}_${Date.now()}@${domain}`;
   },
 
   generateName: (): string => {
-    const firstName = FIRST_NAMES[Math.floor(Math.random() * FIRST_NAMES.length)];
-    const lastName = LAST_NAMES[Math.floor(Math.random() * LAST_NAMES.length)];
+    const firstName = pick(FIRST_NAMES);
+    const lastName = pick(LAST_NAMES);
     return `${firstName} ${lastName}`;
   },
 
   generateFirstName: (): string => {
-    return FIRST_NAMES[Math.floor(Math.random() * FIRST_NAMES.length)];
+    return pick(FIRST_NAMES);
   },
 
   generateLastName: (): string => {
-    return LAST_NAMES[Math.floor(Math.random() * LAST_NAMES.length)];
+    return pick(LAST_NAMES);
   },
 
   generatePassword: (length: number = 12): string => {
@@ -88,19 +101,23 @@ export const DataFactory = {
     const allChars = uppercase + lowercase + numbers + special;
 
     let password = '';
-    password += uppercase[Math.floor(Math.random() * uppercase.length)];
-    password += lowercase[Math.floor(Math.random() * lowercase.length)];
-    password += numbers[Math.floor(Math.random() * numbers.length)];
-    password += special[Math.floor(Math.random() * special.length)];
+    password += pickChar(uppercase);
+    password += pickChar(lowercase);
+    password += pickChar(numbers);
+    password += pickChar(special);
 
     for (let i = 4; i < length; i++) {
-      password += allChars[Math.floor(Math.random() * allChars.length)];
+      password += pickChar(allChars);
     }
 
-    return password
-      .split('')
-      .sort(() => Math.random() - 0.5)
-      .join('');
+    // Тасование Фишера–Йетса: `sort(() => Math.random() - 0.5)` не равномерное
+    // перемешивание и зависит от алгоритма сортировки движка.
+    const chars = password.split('');
+    for (let i = chars.length - 1; i > 0; i--) {
+      const j = randomIndex(i + 1);
+      [chars[i], chars[j]] = [chars[j], chars[i]];
+    }
+    return chars.join('');
   },
 
   generateUser: (overrides?: Partial<IUserData>): IUserData => {
@@ -133,7 +150,7 @@ export const DataFactory = {
 
     return {
       title:
-        titles[Math.floor(Math.random() * titles.length)] +
+        pick(titles) +
         ` ${DataFactory.generateUniqueId().slice(0, 4)}`,
       completed: false,
       ...overrides,
@@ -157,12 +174,12 @@ export const DataFactory = {
       'test@.com',
       'test@domain',
     ];
-    return invalidPatterns[Math.floor(Math.random() * invalidPatterns.length)];
+    return pick(invalidPatterns);
   },
 
   generateWeakPassword: (): string => {
     const weakPasswords = ['password', '123456', 'qwerty', 'admin', 'letmein', 'abc123'];
-    return weakPasswords[Math.floor(Math.random() * weakPasswords.length)];
+    return pick(weakPasswords);
   },
 
   generateLongText: (length: number): string => {
@@ -171,6 +188,6 @@ export const DataFactory = {
 
   generateSearchQuery: (): string => {
     const queries = ['test', 'sample', 'demo', 'example', 'check', 'find', 'search', 'query'];
-    return queries[Math.floor(Math.random() * queries.length)] + ' ' + generateId().slice(0, 4);
+    return pick(queries) + ' ' + generateId().slice(0, 4);
   },
 };
