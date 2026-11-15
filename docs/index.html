@@ -2,455 +2,602 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>QA Arsenal — разные системы, общий стандарт качества — SSRJKK</title>
-<meta name="description" content="QA Arsenal — QA-монорепозиторий: API, UI, нагрузка, базы данных и Kafka на 5 целей (hh.ru, guap.ru, amoCRM) с единым пайплайном и стандартами. Стек: Python · Go · Playwright · Kafka.">
-<meta name="theme-color" content="#ffffff">
-<meta name="color-scheme" content="light">
-<!--
-  Стиль: The Pudding — белый индекс-контактный лист: хром в Pudding Charcoal на Paper,
-  цвет несут только рамки-истории; typewriter-подписи, chunky serif заголовки.
-  ШРИФТЫ (проверка кириллицы в Google Fonts, subset cyrillic):
-  — Atlas Typewriter (спека) → IBM Plex Mono: кириллица ЕСТЬ ✓
-  — Atlas Grotesk (спека) → Inter: кириллица ЕСТЬ ✓
-  — Gooper SemiCondensed (спека) → Fraunces: кириллицы НЕТ ✗ — заменяю на Bitter 700/800,
-    ближайший chunky-сериф с кириллицей (тёплый плакатный характер, жирные засечки).
-  Дополнительные цвета рамок (violet/teal/tomato/lime) соответствуют списку из спеки
-  («violet, teal, tomato, sky blue, lime»); фирменных hex для них в спеке нет.
--->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QA Arsenal — пять целевых систем, один стандарт качества</title>
+<meta name="description" content="QA-монорепозиторий: API, UI, нагрузочные, БД- и Kafka-проверки для hh.ru, guap.ru и amoCRM в одном пайплайне. Python, Go, Playwright, Kafka.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%232563EB'/%3E%3Crect x='8' y='8' width='10' height='10' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@700;800&family=IBM+Plex+Mono:wght@400&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('anim');</script>
 <style>
-:root{
-  --paper:#ffffff;      /* Paper — канва страницы */
-  --charcoal:#262626;   /* Pudding Charcoal — хром и текст */
-  --graphite:#6d6d6d;   /* Graphite Gray — тизеры */
-  --ink:#000000;        /* Ink — наклейки и заливки */
-  --ash:#acacac;        /* Ash Border — поля с lip-тенью */
-  --f-yellow:#fde300;   /* Highlighter Yellow — рамка hh.ru api */
-  --f-magenta:#ed12ed;  /* Sticker Magenta — рамка hh.ru ui */
-  --f-tomato:#f4502c;   /* рамка guap.ru python */
-  --f-teal:#00a6a6;     /* рамка guap.ru go */
-  --f-violet:#8a4fff;   /* рамка amocrm */
-  --f-lime:#97d700;     /* рамка иллюстрации */
-  --serif:'Bitter','Iowan Old Style',Georgia,'Times New Roman',serif;
-  --mono:'IBM Plex Mono',Menlo,Consolas,monospace;
-  --sans:Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-html,body{overflow-x:clip}
-body{margin:0;background:var(--paper);color:var(--charcoal);font:400 16px/1.4 var(--sans);-webkit-font-smoothing:antialiased}
-a{color:inherit}
-button{cursor:pointer;font:inherit}
-a:focus-visible,button:focus-visible{outline:2px solid var(--charcoal);outline-offset:3px}
-section{scroll-margin-top:16px}
-.wrap{max-width:1280px;margin:0 auto;padding:0 32px}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  :root{
+    --bg:#F8FAFC;
+    --panel:#FFFFFF;
+    --fg:#0F172A;
+    --muted:#475569;
+    --faint:#64748B;
+    --line:#E4ECFC;
+    --line-strong:#C9D7F0;
+    --blue:#2563EB;
+    --blue-deep:#1D4ED8;
+    --cyan:#0891B2;
+    --amber:#D97706;
+    --green:#059669;
+    --red:#DC2626;
+    --ok:#047857;
+    --dark:#0F172A;
+    --dark-fg:#F8FAFC;
+    --dark-muted:#94A3B8;
+    --sans:'Inter',-apple-system,'Segoe UI',sans-serif;
+    --mono:'Fira Code','SFMono-Regular',Consolas,monospace;
+    --wrap:1180px;
+    --pad:clamp(18px,4vw,40px);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;overflow-x:clip}
+  body{
+    font-family:var(--sans);
+    background:var(--bg);
+    color:var(--fg);
+    line-height:1.6;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:#BFDBFE;color:var(--fg)}
+  a{color:inherit;text-decoration:none}
+  img,svg{display:block}
+  .wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--pad)}
 
-/* ── типографские роли ── */
-.label{font:400 12.8px/1.15 var(--mono);letter-spacing:1px;text-transform:uppercase;color:var(--charcoal)}
-.pill{display:inline-flex;align-items:center;height:30px;padding:0 12px;border:1px solid var(--charcoal);border-radius:28px;font:400 14px/19.6px var(--mono);text-transform:uppercase;color:var(--charcoal)}
-.sys{font:400 14px/19.6px var(--mono);text-transform:uppercase;color:var(--charcoal)}
-.teaser{margin:0;color:var(--graphite);font:400 16px/1.4 var(--sans)}
-.blockbtn{display:inline-flex;align-items:center;gap:8px;background:var(--charcoal);color:var(--paper);border:0;border-radius:2px;padding:16px 18px;font:400 12.8px/1.4 var(--mono);letter-spacing:1px;text-transform:uppercase;transition:background .2s ease-in-out}
-.blockbtn:hover{background:var(--ink)}
-.blockbtn:disabled{opacity:.7;cursor:default}
-.ghostbtn{display:inline-flex;align-items:center;background:transparent;color:var(--charcoal);border:1px solid var(--charcoal);border-radius:2px;padding:15px 18px;font:400 12.8px/1.4 var(--mono);letter-spacing:1px;text-transform:uppercase;transition:color .2s ease-in-out,border-color .2s ease-in-out}
-.ghostbtn:hover{color:var(--ink);border-color:var(--ink)}
-.honest{margin:16px 0 0;font:400 12.8px/1.5 var(--mono);color:var(--graphite)}
+  /* ---------- доступность ---------- */
+  .skip{
+    position:absolute;left:16px;top:-48px;z-index:100;
+    background:var(--fg);color:var(--dark-fg);
+    padding:10px 16px;border-radius:2px;font-size:.9rem;font-weight:600;
+    transition:top .2s ease;
+  }
+  .skip:focus{top:12px}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:2px}
+  .dark-zone a:focus-visible,.dark-zone button:focus-visible{outline-color:#93C5FD}
 
-/* ── мастхед ── */
-.mast{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding:28px 0}
-.tagline{font-size:14px;line-height:1.32;color:var(--charcoal)}
-.tagline b{font-weight:700;display:block}
-.wordmark{font:800 30px/1 var(--serif);letter-spacing:-.025em;color:var(--ink);text-transform:lowercase;transform:rotate(-2deg);justify-self:center;white-space:nowrap;text-shadow:0 5px 14px rgba(0,0,0,.18);text-decoration:none}
-.mlinks{justify-self:end;display:flex;gap:20px}
-.mlinks a{font:400 12.8px/1.4 var(--mono);letter-spacing:1px;text-transform:uppercase;color:var(--charcoal)}
-.mlinks a:hover{color:var(--graphite)}
+  /* ---------- пред-анимационные состояния (только при .anim + gsap) ---------- */
+  .anim [data-hero]{opacity:0;transform:translateY(26px)}
+  .anim .reg-row{opacity:0;transform:translateY(16px)}
+  .anim .reveal{opacity:0;transform:translateY(28px)}
+  .anim .tline{opacity:0}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .anim [data-hero],.anim .reg-row,.anim .reveal,.anim .tline{opacity:1 !important;transform:none !important}
+    *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  }
 
-/* ── хиро ── */
-.hero{padding:24px 0 8px}
-.hero .pill{margin-bottom:24px}
-h1{margin:0 0 20px;font:800 clamp(36px,5vw,64px)/1.02 var(--serif);letter-spacing:-.025em;color:var(--charcoal);max-width:900px}
-.hero .lead{margin:0 0 28px;font:400 18px/1.5 var(--sans);color:var(--charcoal);max-width:640px}
-.btnrow{display:flex;gap:12px;flex-wrap:wrap}
-.stack{margin:28px 0 0;font:400 14px/1.4 var(--mono);text-transform:uppercase;letter-spacing:1px;color:var(--graphite)}
+  /* ---------- топбар ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:60;
+    background:rgba(248,250,252,.88);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-in{display:flex;align-items:center;gap:28px;height:64px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:1rem;letter-spacing:-.01em;cursor:pointer}
+  .brand-mark{width:16px;height:16px;background:var(--blue);position:relative;flex:none}
+  .brand-mark::after{content:'';position:absolute;right:-5px;bottom:-5px;width:8px;height:8px;background:var(--cyan)}
+  .brand small{font-weight:500;color:var(--faint);font-size:.8rem;margin-left:2px}
+  .topnav{display:flex;gap:26px;margin-left:auto}
+  .topnav a{font-size:.9rem;font-weight:500;color:var(--muted);transition:color .18s ease}
+  .topnav a:hover{color:var(--blue)}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    height:48px;padding:0 24px;border-radius:2px;border:1px solid transparent;
+    font:600 .95rem/1 var(--sans);cursor:pointer;
+    transition:background .2s ease,border-color .2s ease,color .2s ease,transform .2s ease;
+  }
+  .btn-primary{background:var(--blue);color:#fff}
+  .btn-primary:hover{background:var(--blue-deep)}
+  .btn-ghost{border-color:var(--line-strong);color:var(--fg);background:transparent}
+  .btn-ghost:hover{border-color:var(--fg)}
+  .btn-sm{height:38px;padding:0 16px;font-size:.85rem}
+  .btn-light{background:var(--dark-fg);color:var(--dark)}
+  .btn-light:hover{background:#DBEAFE}
+  .btn-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
 
-/* ── секции ── */
-.sec{padding-top:64px}
-.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:0 0 32px}
-.sec-head h2{margin:0;font:800 32px/1 var(--serif);letter-spacing:-.8px;text-transform:lowercase;color:var(--charcoal)}
+  /* ---------- хиро ---------- */
+  .hero{padding-block:clamp(56px,9vw,108px) clamp(56px,8vw,96px)}
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:clamp(36px,5vw,72px);align-items:start}
+  .hero-grid > *{min-width:0}
+  .hero-kicker{font-family:var(--mono);font-size:.82rem;color:var(--faint);margin-bottom:22px}
+  h1{
+    font-size:clamp(2.05rem,4vw,3.45rem);
+    line-height:1.08;letter-spacing:-.035em;font-weight:800;
+    text-wrap:balance;
+  }
+  h1 .h1-line{display:block}
+  .hero-lead{margin-top:24px;font-size:clamp(1rem,1.4vw,1.14rem);color:var(--muted);max-width:34em;line-height:1.66}
+  .hero-cta{margin-top:34px}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:32px}
+  .tag{
+    font:500 .78rem/1 var(--mono);color:var(--muted);
+    border:1px solid var(--line-strong);background:var(--panel);
+    padding:7px 11px;border-radius:2px;
+  }
 
-/* ── контактный лист: 3 колонки рамок-историй ── */
-.sheet{display:grid;grid-template-columns:repeat(3,1fr);gap:64px 32px}
-.card{min-width:0}
-.tagrow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-.frame{aspect-ratio:1/1.05;display:flex;align-items:flex-end;justify-content:center;padding:24px;overflow:hidden}
-.frame .mock{background:var(--paper);width:min(320px,88%);padding:16px;margin-bottom:-30px;display:flex;flex-direction:column;gap:8px}
-.card h3{margin:16px 0 8px;font:800 32px/1 var(--serif);letter-spacing:-.8px;text-transform:lowercase;color:var(--charcoal)}
-.frame-y{background:var(--f-yellow)}
-.frame-m{background:var(--f-magenta)}
-.frame-t{background:var(--f-tomato)}
-.frame-tl{background:var(--f-teal)}
-.frame-v{background:var(--f-violet)}
+  /* ---------- реестр (продуктовый мокап) ---------- */
+  .reg{
+    position:relative;
+    background:var(--panel);
+    border:1px solid var(--line-strong);
+    border-radius:2px;
+    box-shadow:0 1px 0 rgba(15,23,42,.04),0 28px 56px -30px rgba(15,23,42,.22);
+  }
+  .reg-mark{
+    position:absolute;font-family:var(--mono);font-size:.9rem;color:var(--faint);
+    user-select:none;line-height:1;
+  }
+  .reg-mark.tl{top:-22px;left:-4px}
+  .reg-mark.br{bottom:-22px;right:-4px}
+  .reg-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:15px 20px;border-bottom:1px solid var(--line)}
+  .reg-title{font-weight:700;font-size:.95rem;letter-spacing:-.01em}
+  .reg-meta{font:500 .74rem/1 var(--mono);color:var(--faint)}
+  .reg-row{
+    display:grid;grid-template-columns:18px minmax(0,1.1fr) minmax(0,.7fr) minmax(0,.95fr);
+    gap:14px;align-items:center;
+    padding:13px 20px;border-bottom:1px solid var(--line);
+    transition:background .18s ease;
+  }
+  .reg-row:hover{background:var(--bg)}
+  .mk{width:12px;height:12px;border-radius:1px;flex:none}
+  .mk-1{background:var(--blue)} .mk-2{background:var(--cyan)} .mk-3{background:var(--amber)}
+  .mk-4{background:var(--green)} .mk-5{background:var(--red)}
+  .r-name{font-weight:600;font-size:.92rem;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .r-layer{font:400 .78rem/1.3 var(--mono);color:var(--muted)}
+  .r-status{display:flex;align-items:center;gap:8px;font:500 .78rem/1 var(--mono);color:var(--ok);justify-self:end}
+  .r-status i{width:7px;height:7px;border-radius:50%;background:var(--green);flex:none}
+  .reg-foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:13px 20px}
+  .reg-foot .cap{font:500 .72rem/1 var(--mono);color:var(--faint);margin-right:4px}
+  .layer-chip{font:500 .72rem/1 var(--mono);color:var(--muted);border:1px solid var(--line);padding:5px 8px;border-radius:2px}
+  .reg-note{margin-top:30px;padding-right:24px;font:400 .78rem/1.5 var(--mono);color:var(--faint)}
 
-/* мини-мокапы внутри рамок */
-.mrow{display:flex;align-items:center;gap:8px;font:400 11px/1.6 var(--mono);color:var(--charcoal)}
-.chip{flex:none;padding:1px 6px;background:var(--charcoal);color:var(--paper);font:400 10px/1.6 var(--mono);letter-spacing:.5px;text-transform:uppercase}
-.dot{flex:none;width:8px;height:8px;background:var(--charcoal)}
-.dot.ok{background:var(--charcoal)}
-.dot.off{background:var(--ash)}
-.bar{height:8px;background:#e9e9e9}
-.bar.d{background:#cfcfcf}
-.w40{width:40%}.w55{width:55%}.w65{width:65%}.w80{width:80%}.w95{width:95%}
-.field-mini{border:1px solid var(--ash);border-radius:6px;padding:6px 8px;font:400 11px/1.4 var(--mono);color:var(--graphite);box-shadow:rgba(0,0,0,.3) 0 2px 1px}
-.minibtn{align-self:flex-start;padding:4px 10px;background:var(--charcoal);color:var(--paper);font:400 10px/1.6 var(--mono);letter-spacing:1px;text-transform:uppercase}
-.kanban{display:flex;gap:8px}
-.kanban div{flex:1;display:flex;flex-direction:column;gap:6px}
-.kanban .ktitle{font:400 10px/1.4 var(--mono);text-transform:uppercase;color:var(--graphite)}
-.kanban .kcard{height:14px;background:#e9e9e9}
-.kanban .kcard.d{background:#cfcfcf}
+  /* ---------- метрики ---------- */
+  .metrics{background:var(--panel);border-block:1px solid var(--line)}
+  .metrics-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .mcell{padding:clamp(28px,4vw,44px) clamp(18px,3vw,36px);border-left:1px solid var(--line)}
+  .mcell:first-child{border-left:0}
+  .mnum{font:600 clamp(1.9rem,3.2vw,2.85rem)/1 var(--mono);letter-spacing:-.04em}
+  .mnum em{font-style:normal;color:var(--blue)}
+  .mlabel{margin-top:10px;font-size:.88rem;color:var(--muted)}
 
-/* 6-я ячейка: стандарты (без рамки, как промо-тайл) */
-.tile{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:16px}
-.tile h3{margin:0;font:800 24px/1 var(--serif);color:var(--charcoal)}
+  /* ---------- секции ---------- */
+  section{scroll-margin-top:84px}
+  .sec{padding-block:clamp(68px,9vw,118px)}
+  .sec-head{max-width:640px;margin-bottom:clamp(36px,5vw,60px)}
+  .sec-label{
+    display:flex;align-items:center;gap:12px;
+    font:500 .8rem/1 var(--mono);color:var(--blue);margin-bottom:18px;
+  }
+  .sec-label::before{content:'';width:24px;height:2px;background:currentColor}
+  h2{font-size:clamp(1.65rem,3.3vw,2.55rem);line-height:1.14;letter-spacing:-.025em;font-weight:800;text-wrap:balance}
+  .sec-sub{margin-top:16px;color:var(--muted);font-size:1.02rem;max-width:36em}
 
-/* ── возможности ── */
-.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:48px 32px}
-.feat .num{display:block;margin-bottom:12px;font:400 12.8px/1.15 var(--mono);letter-spacing:1px;text-transform:uppercase;color:var(--graphite)}
-.feat h3{margin:0 0 8px;font:800 24px/1.05 var(--serif);color:var(--charcoal)}
-.feat p{margin:0;font:400 16px/1.4 var(--sans);color:var(--graphite)}
+  /* ---------- возможности ---------- */
+  .features{background:var(--panel);border-block:1px solid var(--line)}
+  .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  .fcard{background:var(--panel);padding:clamp(22px,2.6vw,32px);transition:background .2s ease}
+  .fcard:hover{background:var(--bg)}
+  .fcard svg{width:26px;height:26px;color:var(--fg);transition:color .2s ease;margin-bottom:18px}
+  .fcard:hover svg{color:var(--blue)}
+  .fcard h3{font-size:1.04rem;font-weight:700;letter-spacing:-.015em;margin-bottom:9px}
+  .fcard p{font-size:.93rem;color:var(--muted);line-height:1.62}
 
-/* ── процесс ── */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
-.step .pill{margin-bottom:12px}
-.step h3{margin:0 0 6px;font:800 20px/1.1 var(--serif);color:var(--charcoal);text-transform:lowercase}
-.step p{margin:0;font:400 14px/1.4 var(--sans);color:var(--graphite)}
+  /* ---------- процесс ---------- */
+  .proc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(24px,3vw,40px);position:relative}
+  .proc-track{position:absolute;top:15px;left:0;right:0;height:2px;background:var(--line)}
+  .proc-fill{position:absolute;inset:0;background:var(--blue);transform-origin:left;transform:scaleX(1)}
+  .step{position:relative}
+  .step .num{
+    position:relative;display:inline-block;
+    font:600 .8rem/1 var(--mono);color:var(--blue);
+    background:var(--panel);border:1px solid var(--line-strong);
+    padding:8px 9px;border-radius:2px;margin-bottom:20px;
+  }
+  .step h3{font-size:1.04rem;font-weight:700;letter-spacing:-.015em;margin-bottom:8px}
+  .step p{font-size:.92rem;color:var(--muted);line-height:1.6}
 
-/* ── интерактивная иллюстрация ── */
-.frame-demo{background:var(--f-lime);padding:32px;display:flex;flex-direction:column;align-items:center;gap:20px}
-.console{background:var(--paper);width:min(560px,100%);padding:20px}
-.console .chead{display:flex;justify-content:space-between;gap:12px;font:400 11px/1.6 var(--mono);text-transform:uppercase;color:var(--graphite);border-bottom:1px solid #e9e9e9;padding-bottom:10px;margin-bottom:12px}
-.console ul{list-style:none;margin:0;padding:0}
-.console li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:6px 0;font:400 13px/1.6 var(--mono);color:var(--charcoal)}
-.console li b{font-weight:400}
-.console li b.ok{color:var(--charcoal)}
-.console li b.skip{color:var(--graphite)}
+  /* ---------- демо ---------- */
+  .demo-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(36px,5vw,64px);align-items:start}
+  .demo-grid > *{min-width:0;max-width:100%}
+  .demo-note{
+    margin-top:22px;padding:13px 16px;
+    border-left:3px solid var(--blue);background:var(--panel);
+    font-size:.88rem;color:var(--muted);line-height:1.55;
+  }
+  .demo-cta{margin-top:26px}
+  .term{
+    background:var(--dark);border-radius:2px;overflow:hidden;
+    box-shadow:0 1px 0 rgba(15,23,42,.06),0 28px 56px -30px rgba(15,23,42,.3);
+  }
+  .term-head{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+    padding:11px 18px;border-bottom:1px solid rgba(255,255,255,.09);
+    font:500 .76rem/1 var(--mono);color:var(--dark-muted);
+  }
+  .term-body{padding:18px 20px;min-height:196px;font:400 .8rem/1.9 var(--mono);color:#E2E8F0;overflow-x:auto}
+  .tline{white-space:pre;max-width:100%}
+  .tline{white-space:pre}
+  .t-prompt{color:#93C5FD}
+  .t-dim{color:#7C8DA6}
+  .t-ok{color:#34D399}
+  .term-cap{margin-top:12px;font:400 .76rem/1.5 var(--mono);color:var(--faint)}
 
-/* ── запуск ── */
-.field{background:var(--paper);border:1px solid var(--ash);border-radius:6px;box-shadow:rgba(0,0,0,.3) 0 2px 1px;padding:16px 20px;margin:0 0 20px;font:400 14px/1.7 var(--mono);color:var(--charcoal);overflow-x:auto}
-.launch-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.launch-row .honest{margin:0}
+  /* ---------- CTA-финал ---------- */
+  .cta-final{background:var(--dark);color:var(--dark-fg);text-align:left}
+  .cta-in{padding-block:clamp(72px,9vw,116px)}
+  .cta-final h2{max-width:15em}
+  .cta-final p{margin-top:18px;color:var(--dark-muted);font-size:1.05rem;max-width:33em}
+  .cta-final .btn-row{margin-top:36px}
+  .cta-ghost{border-color:rgba(255,255,255,.28);color:var(--dark-fg)}
+  .cta-ghost:hover{border-color:var(--dark-fg)}
 
-/* ── футер: три колонки ── */
-footer.wrap{margin-top:88px;padding-bottom:56px}
-.fcols{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
-.fcols .label{display:block;margin-bottom:12px;color:var(--graphite)}
-.fcols p{margin:0;font:400 16px/1.4 var(--sans);color:var(--charcoal)}
-.fcols a{font:700 16px/1.4 var(--sans);text-decoration:underline;text-underline-offset:3px;color:var(--charcoal)}
-.fcols a:hover{color:var(--graphite)}
+  /* ---------- футер ---------- */
+  footer{border-top:1px solid var(--line)}
+  .foot-in{
+    display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+    padding-block:26px;font-size:.9rem;
+  }
+  .foot-brand{font-weight:700;letter-spacing:-.01em}
+  .foot-links{display:flex;gap:26px;flex-wrap:wrap}
+  .foot-links a{color:var(--muted);transition:color .18s ease}
+  .foot-links a:hover{color:var(--blue)}
 
-/* ── адаптив ── */
-@media(max-width:1080px){
-  .sheet{grid-template-columns:repeat(2,1fr)}
-  .feats{grid-template-columns:repeat(2,1fr)}
-  .steps{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:680px){
-  .wrap{padding:0 20px}
-  .mast{grid-template-columns:auto 1fr;padding:20px 0}
-  .tagline{display:none}
-  .wordmark{justify-self:start;font-size:26px}
-  h1{font-size:34px}
-  .sheet{grid-template-columns:1fr;gap:56px}
-  .feats{grid-template-columns:1fr;gap:32px}
-  .steps{grid-template-columns:1fr;gap:24px}
-  .frame{aspect-ratio:auto;min-height:300px}
-  .fcols{grid-template-columns:1fr;gap:24px}
-  footer.wrap{margin-top:64px}
-}
-@media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{transition:none!important;animation:none!important}
-}
+  /* ---------- адаптив ---------- */
+  @media (max-width:1020px){
+    .hero-grid{grid-template-columns:1fr;gap:48px}
+    .hero-lead{max-width:40em}
+  }
+  @media (max-width:960px){
+    .fgrid{grid-template-columns:repeat(2,1fr)}
+    .proc-grid{grid-template-columns:1fr;gap:0}
+    .proc-track{display:none}
+    .step{padding-block:22px;border-top:1px solid var(--line)}
+    .step:first-child{border-top:0;padding-top:0}
+    .step .num{margin-bottom:12px}
+    .demo-grid{grid-template-columns:1fr;gap:40px}
+  }
+  @media (max-width:760px){
+    .topnav{display:none}
+    .topbar .btn{margin-left:auto}
+    .metrics-grid{grid-template-columns:repeat(2,1fr)}
+    .mcell:nth-child(odd){border-left:0}
+    .mcell:nth-child(n+3){border-top:1px solid var(--line)}
+  }
+  @media (max-width:640px){
+    .fgrid{grid-template-columns:1fr}
+    .reg-row{grid-template-columns:16px minmax(0,1fr) auto;gap:12px}
+    .r-layer{display:none}
+    .reg-foot .cap{width:100%}
+    .btn{width:100%;justify-content:center}
+    .btn-sm{width:auto}
+    .hero-cta .btn{width:100%}
+    .term-body{font-size:.72rem;line-height:1.8;padding:14px 14px}
+  }
 </style>
 </head>
 <body>
+<a class="skip" href="#main">К содержанию</a>
 
-<!-- ── мастхед ── -->
-<header class="wrap mast">
-  <p class="tagline">QA-монорепозиторий.<b>Пять целей. Один стандарт.</b></p>
-  <a class="wordmark" href="#top" aria-label="QA Arsenal — к началу страницы">qa arsenal</a>
-  <nav class="mlinks" aria-label="Внешние ссылки">
-    <a href="https://github.com/ssrjkk/qa-arsenal">GitHub ↗</a>
-    <a href="https://ssrjkk.github.io/">Все проекты ↗</a>
-  </nav>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#main" aria-label="QA Arsenal — к началу">
+      <span class="brand-mark" aria-hidden="true"></span>
+      QA&nbsp;Arsenal <small>/ монорепо</small>
+    </a>
+    <nav class="topnav" aria-label="Разделы">
+      <a href="#features">Возможности</a>
+      <a href="#how">Как работает</a>
+      <a href="#demo">Демо</a>
+    </nav>
+    <a class="btn btn-ghost btn-sm" href="https://github.com/ssrjkk/qa-arsenal" target="_blank" rel="noopener">GitHub</a>
+  </div>
 </header>
 
-<main id="top">
-<!-- ── хиро ── -->
-<section class="wrap hero">
-  <span class="pill">QA Arsenal · монорепозиторий</span>
-  <h1>Разные системы. Общий стандарт качества.</h1>
-  <p class="lead">API, интерфейсы, нагрузка, базы данных и Kafka в QA-монорепозитории с общими правилами и одним подходом к проверкам.</p>
-  <div class="btnrow">
-    <a class="blockbtn" href="https://github.com/ssrjkk/qa-arsenal#readme">Смотреть репозиторий ↗</a>
-    <a class="ghostbtn" href="https://github.com/ssrjkk/qa-arsenal#readme">Документация</a>
-  </div>
-  <p class="stack">python · typescript · go · playwright</p>
-</section>
+<main id="main">
 
-<!-- ── контактный лист: 5 таргетов + стандарты ── -->
-<section class="wrap sec" id="targets">
-  <div class="sec-head">
-    <h2>контактный лист</h2>
-    <span class="sys">5 таргетов · 1 репозиторий</span>
-  </div>
-  <div class="sheet">
-
-    <article class="card">
-      <div class="tagrow"><span class="pill">TGT-01</span><span class="sys">REST API</span></div>
-      <div class="frame frame-y">
-        <div class="mock" role="img" aria-label="Мини-мокап: REST-запрос к API вакансий с ответом 200">
-          <div class="mrow"><span class="chip">GET</span><span>/vacancies</span></div>
-          <div class="mrow"><span class="dot ok"></span><span>200 ok · контракт схемы совпал</span></div>
-          <span class="bar w95"></span><span class="bar w80"></span><span class="bar w65"></span>
-          <div class="mrow"><span>{"items": …, "page": …}</span></div>
+  <!-- ===== ХИРО ===== -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="hero-kicker" data-hero>QA-монорепо с открытым кодом</p>
+        <h1 data-hero>
+          <span class="h1-line">Пять целевых систем.</span>
+          <span class="h1-line">Один стандарт качества.</span>
+        </h1>
+        <p class="hero-lead" data-hero>
+          QA Arsenal собирает проверки hh.ru, guap.ru и amoCRM в одном репозитории
+          по общим стандартам: API, UI, нагрузка, БД и Kafka — в одном пайплайне,
+          с единым разбором результатов.
+        </p>
+        <div class="btn-row hero-cta" data-hero>
+          <a class="btn btn-primary" href="https://github.com/ssrjkk/qa-arsenal" target="_blank" rel="noopener">Открыть репозиторий</a>
+          <a class="btn btn-ghost" href="#how">Как это работает</a>
+        </div>
+        <div class="tags" data-hero aria-label="Стек">
+          <span class="tag">Python</span>
+          <span class="tag">Go</span>
+          <span class="tag">Playwright</span>
+          <span class="tag">Kafka</span>
         </div>
       </div>
-      <h3>hh.ru api</h3>
-      <p class="teaser">REST-проверки внешнего API: контракты, схемы ответов и статус-коды в одном модуле.</p>
-    </article>
 
-    <article class="card">
-      <div class="tagrow"><span class="pill">TGT-02</span><span class="sys">UI</span></div>
-      <div class="frame frame-m">
-        <div class="mock" role="img" aria-label="Мини-мокап: страница поиска с полем и результатами">
-          <div class="field-mini">поиск: строка запроса…</div>
-          <span class="bar w95"></span><span class="bar d w80"></span><span class="bar w55"></span>
-          <span class="minibtn">открыть путь</span>
-        </div>
-      </div>
-      <h3>hh.ru ui</h3>
-      <p class="teaser">Интерфейсные проверки на Playwright: поиск, формы и пользовательские пути браузера.</p>
-    </article>
-
-    <article class="card">
-      <div class="tagrow"><span class="pill">TGT-03</span><span class="sys">PYTHON</span></div>
-      <div class="frame frame-t">
-        <div class="mock" role="img" aria-label="Мини-мокап: Python-проверки страниц и форм">
-          <div class="mrow"><span>get /schedule → 200</span></div>
-          <div class="mrow"><span>assert schema ✓</span></div>
-          <span class="bar w80"></span><span class="bar d w65"></span><span class="bar w40"></span>
-        </div>
-      </div>
-      <h3>guap.ru python</h3>
-      <p class="teaser">Проверки сайта на Python: страницы, формы и расписание без ручного обхода.</p>
-    </article>
-
-    <article class="card">
-      <div class="tagrow"><span class="pill">TGT-04</span><span class="sys">GO</span></div>
-      <div class="frame frame-tl">
-        <div class="mock" role="img" aria-label="Мини-мокап: таблица результатов проверок на Go">
-          <div class="mrow"><span class="chip">run</span><span>target · статус</span></div>
-          <div class="mrow"><span class="dot ok"></span><span class="bar w80" style="flex:1"></span></div>
-          <div class="mrow"><span class="dot ok"></span><span class="bar d w65" style="flex:1"></span></div>
-          <div class="mrow"><span class="dot off"></span><span class="bar w55" style="flex:1"></span></div>
-        </div>
-      </div>
-      <h3>guap.ru go</h3>
-      <p class="teaser">Те же стандарты на Go: быстрые утилиты и интеграционные проверки таргета.</p>
-    </article>
-
-    <article class="card">
-      <div class="tagrow"><span class="pill">TGT-05</span><span class="sys">CRM</span></div>
-      <div class="frame frame-v">
-        <div class="mock" role="img" aria-label="Мини-мокап: канбан сделок CRM">
-          <div class="kanban">
-            <div><span class="ktitle">новые</span><span class="kcard"></span><span class="kcard d"></span></div>
-            <div><span class="ktitle">в работе</span><span class="kcard d"></span></div>
-            <div><span class="ktitle">закрыты</span><span class="kcard"></span></div>
+      <div class="hero-mock" data-hero>
+        <div class="reg" role="img" aria-label="Реестр пяти целевых систем QA Arsenal: hh.ru API, hh.ru UI, guap.ru Python, guap.ru Go и amoCRM — все подключены к общему пайплайну">
+          <span class="reg-mark tl" aria-hidden="true">+</span>
+          <span class="reg-mark br" aria-hidden="true">+</span>
+          <div class="reg-head">
+            <span class="reg-title">Реестр целей</span>
+            <span class="reg-meta">targets · 5</span>
           </div>
-          <span class="bar w65"></span><span class="bar w40"></span>
+          <div class="reg-row">
+            <span class="mk mk-1" aria-hidden="true"></span>
+            <span class="r-name">hh.ru</span>
+            <span class="r-layer">API-проверки</span>
+            <span class="r-status"><i aria-hidden="true"></i>подключена</span>
+          </div>
+          <div class="reg-row">
+            <span class="mk mk-2" aria-hidden="true"></span>
+            <span class="r-name">hh.ru</span>
+            <span class="r-layer">UI-проверки</span>
+            <span class="r-status"><i aria-hidden="true"></i>подключена</span>
+          </div>
+          <div class="reg-row">
+            <span class="mk mk-3" aria-hidden="true"></span>
+            <span class="r-name">guap.ru</span>
+            <span class="r-layer">Python-проверки</span>
+            <span class="r-status"><i aria-hidden="true"></i>подключена</span>
+          </div>
+          <div class="reg-row">
+            <span class="mk mk-4" aria-hidden="true"></span>
+            <span class="r-name">guap.ru</span>
+            <span class="r-layer">Go-проверки</span>
+            <span class="r-status"><i aria-hidden="true"></i>подключена</span>
+          </div>
+          <div class="reg-row">
+            <span class="mk mk-5" aria-hidden="true"></span>
+            <span class="r-name">amoCRM</span>
+            <span class="r-layer">API-проверки</span>
+            <span class="r-status"><i aria-hidden="true"></i>подключена</span>
+          </div>
+          <div class="reg-foot">
+            <span class="cap">слои проверок:</span>
+            <span class="layer-chip">API</span>
+            <span class="layer-chip">UI</span>
+            <span class="layer-chip">нагрузка</span>
+            <span class="layer-chip">БД</span>
+            <span class="layer-chip">Kafka</span>
+          </div>
+        </div>
+        <p class="reg-note">Каждая цель входит в реестр с собственным цветом — далее он следует за ней по отчётам и пайплайну.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== МЕТРИКИ ===== -->
+  <section class="metrics" aria-label="Ключевые цифры">
+    <div class="wrap metrics-grid">
+      <div class="mcell reveal">
+        <div class="mnum">5</div>
+        <div class="mlabel">целевых систем в одном репозитории</div>
+      </div>
+      <div class="mcell reveal">
+        <div class="mnum">5</div>
+        <div class="mlabel">типов проверок: API, UI, нагрузка, БД, Kafka</div>
+      </div>
+      <div class="mcell reveal">
+        <div class="mnum">2</div>
+        <div class="mlabel">языка в стеке: Python и Go</div>
+      </div>
+      <div class="mcell reveal">
+        <div class="mnum">1</div>
+        <div class="mlabel">общий пайплайн и единые стандарты</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ВОЗМОЖНОСТИ ===== -->
+  <section class="sec features" id="features">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="sec-label">Возможности</p>
+        <h2>Один репозиторий вместо пяти разрозненных проектов</h2>
+        <p class="sec-sub">Арсенал устроен как система: цели, проверки, пайплайн и отчётность связаны общими правилами.</p>
+      </div>
+      <div class="fgrid">
+        <article class="fcard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5A1.5 1.5 0 0 1 5.5 5H10l2 2.5h6.5A1.5 1.5 0 0 1 20 9v8.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5Z"/><path d="M4 11.5h16"/></svg>
+          <h3>Целевые системы в одном репо</h3>
+          <p>hh.ru, guap.ru и amoCRM описаны в одном монорепозитории: один клон — весь арсенал проверок под рукой.</p>
+        </article>
+        <article class="fcard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/><path d="m9.5 14.5 2 2 4-4.5"/></svg>
+          <h3>Контракты и тесты</h3>
+          <p>Ожидания к каждой цели зафиксированы как контракты, а проверки подтверждают их при каждом запуске.</p>
+        </article>
+        <article class="fcard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+          <h3>Общий пайплайн</h3>
+          <p>Один пайплайн прогоняет все цели по единым правилам: запуск, окружение и отчётность одинаковы для всех.</p>
+        </article>
+        <article class="fcard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="m8.3 11 2 2 3.4-3.8"/></svg>
+          <h3>Разбор результатов</h3>
+          <p>Результаты приходят в едином формате: сразу видно, какая цель упала, на каком контракте и почему.</p>
+        </article>
+        <article class="fcard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5"/><path d="M3.5 3.5v5h5"/><path d="M12 7.5V12l3.5 2"/></svg>
+          <h3>Отчёты и история</h3>
+          <p>Прогоны сохраняются: динамика по каждой цели видна между запусками, без ручной сборки логов.</p>
+        </article>
+        <article class="fcard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 5.8v5.4c0 4.3 2.9 7.2 7 8.8 4.1-1.6 7-4.5 7-8.8V5.8Z"/><path d="m9 11.6 2.1 2.1L15 9.5"/></svg>
+          <h3>Стандарты для всех таргетов</h3>
+          <p>Общие правила кода, структуры и нейминга: новая цель подключается по готовому шаблону, а не с нуля.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== КАК РАБОТАЕТ ===== -->
+  <section class="sec" id="how">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="sec-label">Как работает</p>
+        <h2>Как цель проходит арсенал</h2>
+        <p class="sec-sub">Четыре шага — от точки входа до разбора результата. Путь одинаковый для всех пяти систем.</p>
+      </div>
+      <div class="proc-grid">
+        <div class="proc-track" aria-hidden="true"><span class="proc-fill"></span></div>
+        <div class="step">
+          <span class="num">01</span>
+          <h3>Целевая система</h3>
+          <p>Цель попадает в реестр: окружение, точки входа и то, что именно проверяем.</p>
+        </div>
+        <div class="step">
+          <span class="num">02</span>
+          <h3>Контракты и тесты</h3>
+          <p>Контракты фиксируют ожидания к системе, проверки подтверждают их на практике.</p>
+        </div>
+        <div class="step">
+          <span class="num">03</span>
+          <h3>Общий пайплайн</h3>
+          <p>Пайплайн гоняет проверки всех целей по одним правилам — от API до Kafka.</p>
+        </div>
+        <div class="step">
+          <span class="num">04</span>
+          <h3>Разбор результата</h3>
+          <p>Падение разбирается по единому формату: цель, контракт, причина.</p>
         </div>
       </div>
-      <h3>amocrm</h3>
-      <p class="teaser">Проверки CRM-сценариев: сделки, воронки и интеграции по общим правилам.</p>
-    </article>
-
-    <div class="tile">
-      <h3>стандарты для всех таргетов</h3>
-      <p class="teaser">Единые правила контрактов, структуры и отчётности — независимо от стека и цели. Новая цель подключается по тем же правилам.</p>
-      <a class="blockbtn" href="https://github.com/ssrjkk/qa-arsenal#readme">Как устроен репозиторий ↗</a>
     </div>
+  </section>
 
-  </div>
-</section>
-
-<!-- ── возможности ── -->
-<section class="wrap sec" id="features">
-  <div class="sec-head">
-    <h2>возможности</h2>
-    <span class="sys">что даёт один репозиторий</span>
-  </div>
-  <div class="feats">
-    <div class="feat"><span class="num">01</span><h3>целевые системы в одном репо</h3><p>API, UI, нагрузка, БД и Kafka живут рядом, а не в разных проектах.</p></div>
-    <div class="feat"><span class="num">02</span><h3>контракты и тесты</h3><p>Ожидания от каждой системы зафиксированы и проверяемы.</p></div>
-    <div class="feat"><span class="num">03</span><h3>общий пайплайн</h3><p>Один путь запуска проверок для всех таргетов и стеков.</p></div>
-    <div class="feat"><span class="num">04</span><h3>разбор результатов</h3><p>Падения разбираются по единым правилам, а не по настроению.</p></div>
-    <div class="feat"><span class="num">05</span><h3>отчёты и история</h3><p>Прогоны складываются в наблюдаемую историю качества.</p></div>
-    <div class="feat"><span class="num">06</span><h3>стандарты для всех таргетов</h3><p>Правила одни — от hh.ru до amoCRM, от Python до Go.</p></div>
-  </div>
-</section>
-
-<!-- ── процесс ── -->
-<section class="wrap sec" id="process">
-  <div class="sec-head">
-    <h2>процесс</h2>
-    <span class="sys">4 шага · одинаковые для всех</span>
-  </div>
-  <div class="steps">
-    <div class="step"><span class="pill">шаг 01</span><h3>Целевая система</h3><p>Выбираем таргет и его поверхность проверки.</p></div>
-    <div class="step"><span class="pill">шаг 02</span><h3>Контракты и тесты</h3><p>Фиксируем ожидания и пишем проверки по стандарту.</p></div>
-    <div class="step"><span class="pill">шаг 03</span><h3>Общий пайплайн</h3><p>Запускаем всё через один и тот же конвейер.</p></div>
-    <div class="step"><span class="pill">шаг 04</span><h3>Разбор результата</h3><p>Читаем отчёт и возвращаемся к контрактам.</p></div>
-  </div>
-</section>
-
-<!-- ── интерактивная иллюстрация (честная заглушка) ── -->
-<section class="wrap sec" id="demo">
-  <div class="sec-head">
-    <h2>иллюстрация</h2>
-    <span class="sys">локальный прогон · без внешних вызовов</span>
-  </div>
-  <div class="frame-demo">
-    <div class="console">
-      <div class="chead"><span>qa-arsenal · модульные проверки</span><span>локально</span></div>
-      <ul id="checks"></ul>
+  <!-- ===== ДЕМО ===== -->
+  <section class="sec features" id="demo">
+    <div class="wrap demo-grid">
+      <div class="reveal">
+        <p class="sec-label">Демо</p>
+        <h2>Проверки, которые видно в действии</h2>
+        <p class="sec-sub">В репозитории есть модульные проверки контрактов: они выполняются локально и не требуют учётных данных внешних систем. Ниже — иллюстрация такого прогона.</p>
+        <div class="demo-note">
+          Демо-заглушка: воспроизводит формат вывода, не подключаясь к hh.ru, guap.ru и amoCRM.
+        </div>
+        <div class="demo-cta">
+          <button class="btn btn-primary" id="demo-run" type="button">Прогнать демо</button>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="term" id="demo-term">
+          <div class="term-head">
+            <span>qa-arsenal — локальный прогон</span>
+            <span>mode: unit</span>
+          </div>
+          <div class="term-body" aria-live="polite">
+<span class="tline"><span class="t-prompt">$</span> pytest targets/ -m unit</span>
+<span class="tline t-dim"># модульные проверки · без учётных данных внешних систем</span>
+<span class="tline">targets/hh/test_contracts.py     ............   [ 32%]</span>
+<span class="tline">targets/guap/test_contracts.py   .......        [ 51%]</span>
+<span class="tline">targets/amo/test_contracts.py   ..........      [ 78%]</span>
+<span class="tline">targets/registry/test_targets.py ........       [100%]</span>
+<span class="tline t-ok">37 passed · 0 failed · внешние системы отключены</span>
+          </div>
+        </div>
+        <p class="term-cap">Формат вывода — как в реальном прогоне модульных проверок репозитория.</p>
+      </div>
     </div>
-    <button class="blockbtn" id="run" type="button">Прогнать проверки</button>
-  </div>
-  <p class="honest">Локальная иллюстрация, не подключается к сервисам. Модульные проверки выполняются без учётных данных внешних систем.</p>
-  <p class="sr-only" aria-live="polite" id="checks-status"></p>
-</section>
+  </section>
 
-<!-- ── запуск ── -->
-<section class="wrap sec" id="start">
-  <div class="sec-head">
-    <h2>запуск</h2>
-    <span class="sys">git · локально</span>
-  </div>
-  <pre class="field" id="cmd">git clone https://github.com/ssrjkk/qa-arsenal.git
-cd qa-arsenal</pre>
-  <div class="launch-row">
-    <button class="blockbtn" type="button" data-copy="git clone https://github.com/ssrjkk/qa-arsenal.git&#10;cd qa-arsenal">Скопировать</button>
-    <p class="honest">Скопируйте обе команды — дальше README в репозитории.</p>
-  </div>
-</section>
+  <!-- ===== CTA-ФИНАЛ ===== -->
+  <section class="cta-final dark-zone">
+    <div class="wrap cta-in">
+      <p class="sec-label reveal" style="color:#60A5FA">Репозиторий</p>
+      <h2 class="reveal">Весь арсенал — в открытом репозитории</h2>
+      <p class="reveal">Структура целей, контракты, общий пайплайн и стандарты — смотрите код и забирайте подход в свой QA.</p>
+      <div class="btn-row reveal">
+        <a class="btn btn-light" href="https://github.com/ssrjkk/qa-arsenal" target="_blank" rel="noopener">Открыть репозиторий</a>
+        <a class="btn btn-ghost cta-ghost" href="https://ssrjkk.github.io/">Другие проекты</a>
+      </div>
+    </div>
+  </section>
+
 </main>
 
-<!-- ── футер ── -->
-<footer class="wrap">
-  <div class="fcols">
-    <div><span class="label">проект</span><p>Проект SSRJKK</p></div>
-    <div><span class="label">репозиторий</span><a href="https://github.com/ssrjkk/qa-arsenal">qa-arsenal ↗</a></div>
-    <div><span class="label">ещё</span><a href="https://ssrjkk.github.io/">Все проекты ↗</a></div>
+<footer>
+  <div class="wrap foot-in">
+    <span class="foot-brand">Проект SSRJKK</span>
+    <nav class="foot-links" aria-label="Ссылки">
+      <a href="https://github.com/ssrjkk/qa-arsenal" target="_blank" rel="noopener">ssrjkk/qa-arsenal ↗</a>
+      <a href="https://ssrjkk.github.io/" target="_blank" rel="noopener">Все проекты ↗</a>
+    </nav>
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 <script>
-(function(){
-  'use strict';
-  /* Копирование команд запуска */
-  document.querySelectorAll('[data-copy]').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      var text=btn.getAttribute('data-copy');
-      function done(){
-        var old=btn.textContent;
-        btn.textContent='Скопировано';btn.disabled=true;
-        setTimeout(function(){btn.textContent=old;btn.disabled=false;},1600);
-      }
-      function fallback(){
-        var ta=document.createElement('textarea');
-        ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
-        document.body.appendChild(ta);ta.select();
-        try{document.execCommand('copy');done();}catch(e){}
-        document.body.removeChild(ta);
-      }
-      if(navigator.clipboard&&navigator.clipboard.writeText){
-        navigator.clipboard.writeText(text).then(done,fallback);
-      }else{fallback();}
-    });
-  });
-
-  /* Иллюстрация-заглушка: модульные проверки, ничего не подключается */
-  var CHECKS=[
-    'парсер конфига таргета',
-    'схема контракта API',
-    'фабрика фикстур БД',
-    'генератор отчёта',
-    'валидация топиков Kafka',
-    'сборка сводки пайплайна'
-  ];
-  var list=document.getElementById('checks'),
-      run=document.getElementById('run'),
-      status=document.getElementById('checks-status');
-  function renderChecks(){
-    if(!list)return;
-    list.innerHTML=CHECKS.map(function(c){
-      var ok=Math.random()>0.25;
-      return '<li><span>'+c+'</span><b class="'+(ok?'ok':'skip')+'">'+(ok?'✓':'–')+'</b></li>';
-    }).join('');
-    if(status){status.textContent='Модульные проверки перезапущены локально, без учётных данных внешних систем.';}
-  }
-  if(run){run.addEventListener('click',renderChecks);}
-  renderChecks();
-})();
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-<script>
-/* Моушен-слой витрин: вход хиро + scroll-ревилы секций. GSAP по CDN. */
 (function () {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  if (!window.gsap || !window.ScrollTrigger) return;
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasGsap = !!(window.gsap && window.ScrollTrigger);
+
+  /* Моушен недоступен или не нужен — вернуть всё в видимое состояние */
+  if (!hasGsap || reduce) {
+    document.documentElement.classList.remove('anim');
+  }
+
+  /* Демо-терминал: работает и без GSAP */
+  var lines = Array.prototype.slice.call(document.querySelectorAll('#demo-term .tline'));
+  function playTerminal() {
+    if (hasGsap && !reduce) {
+      gsap.fromTo(lines,
+        { autoAlpha: 0, y: 8 },
+        { autoAlpha: 1, y: 0, duration: .32, stagger: .13, ease: 'power2.out', overwrite: true });
+    } else {
+      lines.forEach(function (l) { l.style.opacity = '1'; });
+    }
+  }
+  var runBtn = document.getElementById('demo-run');
+  if (runBtn) runBtn.addEventListener('click', playTerminal);
+
+  if (!hasGsap || reduce) return;
+
   gsap.registerPlugin(ScrollTrigger);
 
-  var heroKids = document.querySelectorAll(
-    "section:first-of-type h1, section:first-of-type .tag, section:first-of-type .sub," +
-    "section:first-of-type .intro, section:first-of-type .lede, section:first-of-type .btnrow," +
-    "section:first-of-type .cta, section:first-of-type .actions, section:first-of-type .stack," +
-    "section:first-of-type .eyebrow, section:first-of-type .pill, section:first-of-type .lead"
-  );
-  if (heroKids.length) {
-    gsap.set(heroKids, { autoAlpha: 0, y: 18 });
-    gsap.to(heroKids, {
-      autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.09,
-      ease: "power2.out", delay: 0.15, clearProps: "transform"
-    });
-  }
+  /* Вход хиро каскадом */
+  gsap.to('[data-hero]', {
+    y: 0, autoAlpha: 1, duration: .7, stagger: .09, ease: 'power3.out', delay: .05
+  });
+  gsap.to('.reg-row', {
+    y: 0, autoAlpha: 1, duration: .45, stagger: .07, ease: 'power2.out', delay: .55
+  });
 
-  var targets = [];
-  document.querySelectorAll("main > section, main > div, body > main > section, .section").forEach(function (sec) {
-    Array.prototype.forEach.call(sec.children, function (c) {
-      if (targets.indexOf(c) === -1) targets.push(c);
+  /* Scroll-ревилы секций */
+  gsap.utils.toArray('.reveal').forEach(function (el) {
+    gsap.to(el, {
+      y: 0, autoAlpha: 1, duration: .75, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 86%', once: true }
     });
   });
-  if (targets.length) {
-    gsap.set(targets, { autoAlpha: 0, y: 26 });
-    ScrollTrigger.batch(targets, {
-      start: "top 90%",
-      once: true,
-      onEnter: function (batch) {
-        gsap.to(batch, {
-          autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.1,
-          ease: "power2.out", overwrite: true, clearProps: "transform"
-        });
-      }
-    });
+
+  /* Линия процесса: заливка по скроллу */
+  gsap.fromTo('.proc-fill', { scaleX: 0 }, {
+    scaleX: 1, ease: 'none',
+    scrollTrigger: { trigger: '.proc-grid', start: 'top 78%', end: 'bottom 55%', scrub: .4 }
+  });
+
+  /* Автозапуск демо при появлении на экране */
+  ScrollTrigger.create({ trigger: '#demo-term', start: 'top 75%', once: true, onEnter: playTerminal });
+
+  /* Пересчёт после загрузки шрифтов */
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
   }
 })();
 </script>
