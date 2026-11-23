@@ -28,6 +28,8 @@ Captured from the published site in a real browser (Chrome, 1440×900 and 390×8
 
 <p align="center"><img src="docs/screenshots/mobile.jpg" width="320" alt="QA Arsenal — mobile view"></p>
 
+- [Showcase](https://ssrjkk.github.io/qa-arsenal/showcase/)
+
 ## Why five repositories live here
 
 This repo did not start as a monorepo. It is the result of consolidating **five independent
