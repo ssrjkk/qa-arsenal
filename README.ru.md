@@ -10,6 +10,18 @@
 
 ---
 
+**Сайт:** https://ssrjkk.github.io/qa-arsenal/
+
+## Скриншоты
+
+Сняты с опубликованного сайта в настоящем браузере (Chrome, 1440×900 и 390×844).
+
+| Главная | Разделы |
+| --- | --- |
+| <img src="docs/screenshots/home.jpg" width="420" alt="QA Arsenal — главная страница"> | <img src="docs/screenshots/content.jpg" width="420" alt="QA Arsenal — разделы сайта"> |
+
+<p align="center"><img src="docs/screenshots/mobile.jpg" width="320" alt="QA Arsenal — мобильная версия"></p>
+
 ## Почему здесь пять репозиториев
 
 Этот репозиторий не начинался как моно-репо. Он — результат консолидации **пяти независимых

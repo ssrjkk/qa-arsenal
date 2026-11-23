@@ -16,6 +16,18 @@ set of standards and one place to review changes.
 
 ---
 
+**Site:** https://ssrjkk.github.io/qa-arsenal/
+
+## Screenshots
+
+Captured from the published site in a real browser (Chrome, 1440×900 and 390×844).
+
+| Home | Sections |
+| --- | --- |
+| <img src="docs/screenshots/home.jpg" width="420" alt="QA Arsenal — landing page"> | <img src="docs/screenshots/content.jpg" width="420" alt="QA Arsenal — site sections"> |
+
+<p align="center"><img src="docs/screenshots/mobile.jpg" width="320" alt="QA Arsenal — mobile view"></p>
+
 ## Why five repositories live here
 
 This repo did not start as a monorepo. It is the result of consolidating **five independent
