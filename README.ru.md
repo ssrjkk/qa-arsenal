@@ -186,3 +186,7 @@ git-история утрачена.
 ## Лицензия
 
 MIT — см. [LICENSE](LICENSE).
+
+## Документация
+
+- [Showcase](https://ssrjkk.github.io/qa-arsenal/showcase/)
