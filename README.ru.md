@@ -188,3 +188,17 @@ git-история утрачена.
 ## Лицензия
 
 MIT — см. [LICENSE](LICENSE).
+
+## Установка
+
+```bash
+git clone https://github.com/ssrjkk/qa-arsenal.git
+cd qa-arsenal
+pip install -r requirements.txt
+```
+
+## Использование
+
+```bash
+python main.py
+```
