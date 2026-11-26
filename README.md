@@ -92,8 +92,8 @@ qa-arsenal/
   integration suites pass; run `make test` locally with a real `.env` for that.
 - **No coverage gate** — some targets carry coverage config, but the monorepo does not enforce a
   coverage threshold on merges.
-- **`hh/ui` is the thinnest E2E target** — 6 E2E specs only; it has a 29-test unit layer plus
-  typecheck + lint in CI, but no automated browser run in the pipeline.
+- **`hh/ui` is the thinnest E2E target** — 6 E2E specs only; unit tests, typecheck and lint run
+  in CI, but no automated browser run is in the pipeline.
 - **Code style differs between targets** — each was built independently with its own stack and
   conventions. The monorepo standardizes the *interface* (Makefile, CI, README), not the internals.
 - **`amocrm` is heavy** — the biggest suite; a full local run needs PostgreSQL, Kafka, Selenium
