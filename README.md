@@ -1,14 +1,14 @@
 # qa-arsenal
 
-[![CI](https://github.com/ssrjkk/qa-arsenal/actions/workflows/ci.yml/badge.svg)](https://github.com/ssrjkk/qa-arsenal/actions/workflows/ci.yml)
-[python-3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
+
 
 
 
 > **Languages:** [English](README.md) · [Русский](README.ru.md)
 
-[![CI](https://github.com/ssrjkk/qa-arsenal/actions/workflows/ci.yml/badge.svg)](https://github.com/ssrjkk/qa-arsenal/actions)
+
 
 **Unified QA automation for five target platforms in one monorepo.** API, UI, load, database and
 Kafka test suites, consolidated from five separate repositories so they share one pipeline, one

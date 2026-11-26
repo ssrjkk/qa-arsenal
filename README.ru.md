@@ -2,7 +2,7 @@
 
 > **Языки:** [English](README.md) · [Русский](README.ru.md)
 
-[![CI](https://github.com/ssrjkk/qa-arsenal/actions/workflows/ci.yml/badge.svg)](https://github.com/ssrjkk/qa-arsenal/actions)
+
 
 **Единая QA-автоматизация для пяти площадок в одном моно-репозитории.** API-, UI-, load-,
 базовые и Kafka-наборы тестов, объединённые из пяти отдельных репозиториев: один пайплайн,
