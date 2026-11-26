@@ -22,8 +22,6 @@
 
 <p align="center"><img src="docs/screenshots/mobile.jpg" width="320" alt="QA Arsenal — мобильная версия"></p>
 
-- [Showcase](https://ssrjkk.github.io/qa-arsenal/showcase/)
-
 ## Почему здесь пять репозиториев
 
 Этот репозиторий не начинался как моно-репо. Он — результат консолидации **пяти независимых
